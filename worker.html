@@ -1,0 +1,1182 @@
+<!DOCTYPE html><html lang="fa" dir="rtl"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>پنل پرسنل | انتخاب نیک</title>
+
+<link rel="stylesheet" href="worker.css">
+
+</head><body><div class="worker-page"><!-- =========================
+     هدر
+========================== -->
+
+<header class="worker-header">
+
+    <div class="worker-logo">
+
+        <div class="logo-icon">
+            ن
+        </div>
+
+        <div>
+            <h1>انتخاب نیک</h1>
+            <span>پنل پرسنل</span>
+        </div>
+
+    </div>
+
+    <button
+        type="button"
+        class="logout-button"
+        id="logoutButton">
+        خروج
+    </button>
+
+</header>
+
+
+<!-- =========================
+     محتوای اصلی
+========================== -->
+
+<main class="worker-main">
+
+    <!-- خوش آمدگویی -->
+
+    <section class="welcome-section">
+
+        <span class="section-label">
+            پنل اختصاصی پرسنل
+        </span>
+
+        <h2 id="workerWelcome">
+            خوش آمدید
+        </h2>
+
+        <p>
+            اطلاعات و کارهای شما در این پنل نمایش داده می‌شود.
+        </p>
+
+    </section>
+
+
+    <!-- =========================
+         منوی اصلی
+    ========================== -->
+
+    <section class="worker-menu">
+
+        <button
+            type="button"
+            class="menu-card"
+            data-section="profile">
+
+            <span class="menu-icon">👤</span>
+            <span>اطلاعات من</span>
+
+        </button>
+
+
+        <button
+            type="button"
+            class="menu-card"
+            data-section="jobs">
+
+            <span class="menu-icon">🧹</span>
+            <span>کارهای من</span>
+
+        </button>
+
+
+        <button
+            type="button"
+            class="menu-card"
+            data-section="account">
+
+            <span class="menu-icon">💰</span>
+            <span>حساب من</span>
+
+        </button>
+
+
+        <button
+            type="button"
+            class="menu-card"
+            data-section="payment">
+
+            <span class="menu-icon">💳</span>
+            <span>واریز به شرکت</span>
+
+        </button>
+
+
+        <button
+            type="button"
+            class="menu-card"
+            data-section="message">
+
+            <span class="menu-icon">💬</span>
+            <span>پیام به شرکت</span>
+
+        </button>
+
+
+        <button
+            type="button"
+            class="menu-card"
+            data-section="training">
+
+            <span class="menu-icon">📚</span>
+            <span>آموزش و نحوه انجام کار</span>
+
+        </button>
+
+
+        <button
+            type="button"
+            class="menu-card"
+            data-section="rules">
+
+            <span class="menu-icon">📋</span>
+            <span>قوانین همکاری</span>
+
+        </button>
+
+
+        <button
+            type="button"
+            class="menu-card"
+            data-section="announcements">
+
+            <span class="menu-icon">📢</span>
+            <span>اطلاعیه‌ها</span>
+
+        </button>
+
+    </section>
+
+
+    <!-- =========================
+         بخش اطلاعات من
+    ========================== -->
+
+    <section
+        class="panel-section"
+        id="profileSection">
+
+        <div class="section-header">
+
+            <span class="section-icon">
+                👤
+            </span>
+
+            <div>
+
+                <h3>
+                    اطلاعات من
+                </h3>
+
+                <p>
+                    اطلاعات ثبت‌شده شما در شرکت
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="info-grid">
+
+            <div class="info-item">
+                <span>نام و نام خانوادگی</span>
+                <strong id="workerName">---</strong>
+            </div>
+
+
+            <div class="info-item">
+                <span>کد پیگیری</span>
+                <strong id="workerCode">---</strong>
+            </div>
+
+
+            <div class="info-item">
+                <span>شماره موبایل</span>
+                <strong id="workerPhone">---</strong>
+            </div>
+
+
+            <div class="info-item">
+                <span>آدرس</span>
+                <strong id="workerAddress">---</strong>
+            </div>
+
+
+            <div class="info-item">
+                <span>وضعیت همکاری</span>
+                <strong id="workerStatus">---</strong>
+            </div>
+
+
+            <div class="info-item">
+                <span>تاریخ شروع همکاری</span>
+                <strong id="workerStartDate">---</strong>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         کارهای من
+    ========================== -->
+
+    <section
+        class="panel-section"
+        id="jobsSection">
+
+        <div class="section-header">
+
+            <span class="section-icon">
+                🧹
+            </span>
+
+            <div>
+
+                <h3>
+                    کارهای من
+                </h3>
+
+                <p>
+                    کارهای ثبت‌شده برای شما
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="jobs-container"
+            id="jobsContainer">
+
+            <div class="empty-state">
+
+                <span>🧹</span>
+
+                <p>
+                    هنوز کاری برای شما ثبت نشده است.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         حساب من
+    ========================== -->
+
+    <section
+        class="panel-section"
+        id="accountSection">
+
+        <div class="section-header">
+
+            <span class="section-icon">
+                💰
+            </span>
+
+            <div>
+
+                <h3>
+                    حساب من
+                </h3>
+
+                <p>
+                    مبالغ مربوط به کارهای شما
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="account-box">
+
+            <div class="account-item">
+
+                <span>
+                    مبلغ حساب
+                </span>
+
+                <strong id="workerAccount">
+                    ---
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         واریز به شرکت
+    ========================== -->
+
+    <section
+        class="panel-section"
+        id="paymentSection">
+
+        <div class="section-header">
+
+            <span class="section-icon">
+                💳
+            </span>
+
+            <div>
+
+                <h3>
+                    واریز به شرکت
+                </h3>
+
+                <p>
+                    اطلاعات حساب شرکت برای واریز
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="payment-box">
+
+            <p>
+                در صورت نیاز به واریز وجه به شرکت،
+                اطلاعات پرداخت از این قسمت در اختیار شما قرار می‌گیرد.
+            </p>
+
+
+            <div id="companyPaymentInfo">
+
+
+                <div class="payment-card">
+
+                    <strong>
+                        💳 شماره کارت
+                    </strong>
+
+                    <div
+                        style="font-size:20px !important; font-weight:700 !important;">
+
+                        ۶۲۱۹۸۶۱۰۳۲۱۴۸۸۶۷
+
+                    </div>
+
+                    <div>
+                        بانک: سامان
+                        &nbsp;&nbsp;&nbsp;
+                        به نام: احمد روحی
+                    </div>
+
+                </div>
+
+
+                <div class="payment-card">
+
+                    <strong>
+                        💳 شماره کارت
+                    </strong>
+
+                    <div
+                        style="font-size:20px !important; font-weight:700 !important;">
+
+                        ۶۲۸۰۲۳۱۴۵۹۴۱۰۰۰۶
+
+                    </div>
+
+                    <div>
+                        بانک: مسکن
+                        &nbsp;&nbsp;&nbsp;
+                        به نام: صمدی
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         پیام به شرکت
+    ========================== -->
+
+    <section
+        class="panel-section"
+        id="messageSection">
+
+        <div class="section-header">
+
+            <span class="section-icon">
+                💬
+            </span>
+
+            <div>
+
+                <h3>
+                    پیام به شرکت
+                </h3>
+
+                <p>
+                    ارسال پیام و درخواست به شرکت
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <form id="messageForm">
+
+
+            <textarea
+                id="workerMessage"
+                placeholder="پیام خود را بنویسید..."
+                rows="5"
+                required></textarea>
+
+
+            <div class="receipt-upload">
+
+                <label for="receiptImage">
+                    📷 ارسال عکس رسید واریز
+                </label>
+
+
+                <input
+                    type="file"
+                    id="receiptImage"
+                    accept="image/*">
+
+
+                <div id="receiptPreview"></div>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="submit-message">
+
+                ارسال پیام
+
+            </button>
+
+
+            <div id="messageResult"></div>
+
+
+        </form>
+
+    </section>
+
+
+    <!-- =========================
+         آموزش
+    ========================== -->
+
+    <section
+        class="panel-section"
+        id="trainingSection">
+
+        <div class="section-header">
+
+            <span class="section-icon">
+                📚
+            </span>
+
+            <div>
+
+                <h3>
+                    آموزش و نحوه انجام کار
+                </h3>
+
+                <p>
+                    راهنمای انجام صحیح خدمات
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="training-list">
+
+
+            <details class="training-item">
+
+                <summary>
+                    نظافت راه‌پله
+                </summary>
+
+
+                <div class="training-content">
+
+                    <h4>
+                        ترتیب نظافت راه‌پله
+                    </h4>
+
+
+                    <ol>
+
+                        <li>
+                            ابتدا از راهرو پشت‌بام شروع به جارو کردن می‌کنیم.
+                            سپس به پایین می‌آییم و پارکینگ و حیاط را هم جارو می‌زنیم.
+                            چون اگر بدون جارو کردن شستشو انجام شود و فاضلاب گرفته شود،
+                            خسارت آن بر عهده شما خواهد بود.
+                        </li>
+
+
+                        <li>
+                            یک سطل آب برداشته، با طی نخی، شیشه‌پاک‌کن و چند دستمال
+                            به طبقه بالا می‌رویم. کپسول آتش‌نشانی، نرده‌ها،
+                            شیشه‌ها و کلید و پریزها را پاک می‌کنیم.
+                            کابین آسانسور را تمیز می‌کنیم و سپس طی هر طبقه را می‌کشیم.
+                        </li>
+
+
+                        <li>
+                            هر چند طبقه یک‌بار سطل آب را عوض می‌کنیم.
+                        </li>
+
+
+                        <li>
+                            وقتی به پارکینگ رسیدیم، تاید می‌ریزیم و بعد از شستشو
+                            با طی مویی، با طی پلاستیکی آب را جمع می‌کنیم.
+                        </li>
+
+
+                        <li>
+                            حیاط اگر آشغال داشت، جمع می‌کنیم و بعد از جارو زدن
+                            حیاط، آن را می‌شوییم.
+                        </li>
+
+
+                        <li>
+                            حتماً درب خروجی‌های پارکینگ را می‌شوییم و مراقب وسایل
+                            برقی مانند آسانسور، آیفون و ریموت پارکینگ هستیم.
+                            بعد از شستشو، درب‌ها را با دستمال خشک می‌کنیم.
+                        </li>
+
+
+                        <li>
+                            هنگام خروج، حتماً کارمان را به نماینده یا یکی از
+                            همسایه‌ها تحویل می‌دهیم.
+                        </li>
+
+
+                        <li>
+                            اگر از آپارتمان آشغال جمع کردید، آن‌ها را به بیرون منتقل کنید.
+                        </li>
+
+
+                        <li>
+                            به هیچ‌وجه در واحد کسی را نزنید، مگر از آیفون خیابان.
+                        </li>
+
+                    </ol>
+
+                </div>
+
+            </details>
+
+
+            <details class="training-item">
+
+                <summary>
+                    نظافت منزل
+                </summary>
+
+
+                <div class="training-content">
+
+                    <h4>
+                        مراحل نظافت منزل
+                    </h4>
+
+
+                    <ol>
+
+                        <li>
+                            <strong>آماده‌سازی و جمع‌آوری اولیه:</strong>
+                            وسایل و خرده‌ریزهای اضافی مرتب و جمع‌آوری شوند.
+                            زباله‌ها جمع شده و وسایل موردنیاز آماده شوند.
+                        </li>
+
+
+                        <li>
+                            <strong>گردگیری منزل:</strong>
+                            گردگیری از قسمت‌های بالاتر به سمت پایین انجام شود.
+                            میزها، کمدها، قفسه‌ها، دستگیره‌ها، کلید و پریزها و
+                            چهارچوب‌ها تمیز شوند.
+                        </li>
+
+
+                        <li>
+                            <strong>اتاق‌ها و پذیرایی:</strong>
+                            میزها، صندلی‌ها و سایر وسایل تمیز شوند.
+                            زیر و اطراف وسایل جارو شود.
+                            شیشه‌ها و آینه‌ها تمیز شوند.
+                        </li>
+
+
+                        <li>
+                            <strong>آشپزخانه:</strong>
+                            سینک، شیرآلات، کابینت‌ها، اجاق گاز و قسمت‌های
+                            قابل شستشوی هود تمیز شوند.
+                        </li>
+
+
+                        <li>
+                            <strong>سرویس بهداشتی و حمام:</strong>
+                            توالت، روشویی، کف، آینه و شیرآلات تمیز شوند.
+                            در پایان کف کاملاً خشک شود.
+                        </li>
+
+
+                        <li>
+                            <strong>شیشه و پنجره‌ها:</strong>
+                            شیشه‌ها، قاب و لبه پنجره‌ها تمیز و خشک شوند.
+                        </li>
+
+
+                        <li>
+                            <strong>جارو و نظافت کف:</strong>
+                            تمام اتاق‌ها، پذیرایی، راهرو و آشپزخانه جارو شوند.
+                            سپس کف‌های قابل شستشو طی کشیده شوند.
+                        </li>
+
+
+                        <li>
+                            <strong>بالکن و تراس:</strong>
+                            آشغال‌ها و گرد و خاک جمع و کف جارو و در صورت نیاز شسته شود.
+                        </li>
+
+                    </ol>
+
+
+                    <h4>
+                        ⚠️ نکات مهم
+                    </h4>
+
+
+                    <ul>
+
+                        <li>
+                            اول جمع‌آوری و گردگیری، بعد جارو و در آخر شستشوی کف.
+                        </li>
+
+                        <li>
+                            برای هر سطح از شوینده مناسب همان سطح استفاده شود.
+                        </li>
+
+                        <li>
+                            مواد شوینده را با یکدیگر مخلوط نکنید.
+                        </li>
+
+                        <li>
+                            وسایل برقی مستقیماً با آب شسته نشوند.
+                        </li>
+
+                        <li>
+                            هنگام نظافت وسایل مشتری با دقت کار کنید.
+                        </li>
+
+                        <li>
+                            در پایان کار یک دور کامل منزل بررسی شود.
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </details>
+
+
+            <details class="training-item">
+
+                <summary>
+                    نظافت واحد خالی
+                </summary>
+
+
+                <div class="training-content">
+
+                    <h4>
+                        🏠 مراحل نظافت واحد خالی
+                    </h4>
+
+
+                    <ol>
+
+                        <li>
+                            <strong>جمع‌آوری گرد و خاک و زباله‌ها:</strong>
+                            تمام زباله‌ها و گرد و خاک جمع‌آوری و کف کاملاً جارو شود.
+                        </li>
+
+
+                        <li>
+                            <strong>گردگیری سطوح:</strong>
+                            طاقچه‌ها، پنجره‌ها، کمدها، کابینت‌ها،
+                            کلید و پریزها و درب‌ها تمیز شوند.
+                        </li>
+
+
+                        <li>
+                            <strong>شیشه‌ها و پنجره‌ها:</strong>
+                            شیشه‌ها و قاب پنجره‌ها تمیز شوند.
+                        </li>
+
+
+                        <li>
+                            <strong>کابینت‌ها و کمدها:</strong>
+                            داخل و بیرون کابینت‌ها و کمدها تمیز و خشک شوند.
+                        </li>
+
+
+                        <li>
+                            <strong>دیوارهای قابل شستشو:</strong>
+                            لکه‌های قابل شستشو با دستمال مرطوب تمیز شوند.
+                        </li>
+
+
+                        <li>
+                            <strong>سرویس بهداشتی و حمام:</strong>
+                            سرویس و حمام شسته و ضدعفونی شوند.
+                        </li>
+
+
+                        <li>
+                            <strong>آشپزخانه:</strong>
+                            سینک، گاز و هود در صورت وجود تمیز شوند.
+                        </li>
+
+
+                        <li>
+                            <strong>کف واحد:</strong>
+                            بعد از جارو، کف شسته و آب کاملاً جمع شود.
+                        </li>
+
+
+                        <li>
+                            <strong>درب ورودی و تراس:</strong>
+                            درب ورودی و تراس یا بالکن تمیز شوند.
+                        </li>
+
+                    </ol>
+
+
+                    <h4>
+                        ⚠️ نکات مهم
+                    </h4>
+
+
+                    <ul>
+
+                        <li>
+                            اول جارو و گردگیری، بعد شستشو.
+                        </li>
+
+                        <li>
+                            مواد شوینده قوی فقط در محل مناسب استفاده شوند.
+                        </li>
+
+                        <li>
+                            مواد شوینده را با یکدیگر مخلوط نکنید.
+                        </li>
+
+                        <li>
+                            بعد از شستشو حتماً خشک‌کنی انجام شود.
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </details>
+
+
+            <details class="training-item">
+
+                <summary>
+                    نظافت اداره
+                </summary>
+
+
+                <div class="training-content">
+
+                    <h4>
+                        🏢 مراحل نظافت شرکت‌ها و ادارات
+                    </h4>
+
+
+                    <ol>
+
+                        <li>
+                            <strong>گردگیری:</strong>
+                            میزها، صندلی‌ها، کمدها، قفسه‌ها، پنجره‌ها و شیشه‌ها تمیز شوند.
+                        </li>
+
+
+                        <li>
+                            <strong>نظافت کف:</strong>
+                            تمام کف‌ها و راهروها جارو و سپس شسته شوند.
+                            زباله‌ها نیز جمع‌آوری شوند.
+                        </li>
+
+
+                        <li>
+                            <strong>سرویس‌های بهداشتی:</strong>
+                            توالت، روشویی، آینه و شیرآلات تمیز شوند.
+                        </li>
+
+
+                        <li>
+                            <strong>آشپزخانه یا آبدارخانه:</strong>
+                            سینک، شیرآلات، پیشخوان و وسایل مشترک تمیز شوند.
+                        </li>
+
+
+                        <li>
+                            <strong>اتاق جلسات:</strong>
+                            میز، صندلی‌ها و کف تمیز و مرتب شوند.
+                        </li>
+
+
+                        <li>
+                            <strong>ضدعفونی:</strong>
+                            سطوح پرتماس مانند دستگیره‌ها و کلیدها تمیز شوند.
+                        </li>
+
+                    </ol>
+
+
+                    <h4>
+                        ⚠️ نکات مهم
+                    </h4>
+
+
+                    <ul>
+
+                        <li>
+                            ابتدا گردگیری و جمع‌آوری زباله، سپس جارو و شستشوی کف.
+                        </li>
+
+                        <li>
+                            روی تجهیزات الکترونیکی مستقیماً آب ریخته نشود.
+                        </li>
+
+                        <li>
+                            مواد شوینده با یکدیگر مخلوط نشوند.
+                        </li>
+
+                        <li>
+                            در پایان کار تمام قسمت‌ها بررسی شوند.
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </details>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         قوانین
+    ========================== -->
+
+    <section
+        class="panel-section"
+        id="rulesSection">
+
+        <div class="section-header">
+
+            <span class="section-icon">
+                📋
+            </span>
+
+            <div>
+
+                <h3>
+                    قوانین همکاری
+                </h3>
+
+                <p>
+                    قوانین و شرایط همکاری با شرکت
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="rules-box">
+
+
+            <div class="rule-item">
+                <span>1️⃣</span>
+                <p>
+                    <strong>تعهد به انجام کار:</strong>
+                    در صورت قبول کردن کار و حاضر نشدن در محل،
+                    مبلغ درصد توافقی به عنوان جریمه دریافت می‌شود.
+                    بار اول کسر درصد، بار دوم دریافت کل مبلغ کار
+                    و بار سوم قطع کامل همکاری.
+                </p>
+            </div>
+
+
+            <div class="rule-item">
+                <span>2️⃣</span>
+                <p>
+                    <strong>نحوه پرداخت مشتری:</strong>
+                    در ۹۰٪ موارد مشتری هزینه را مستقیماً به نظافتچی
+                    پرداخت می‌کند. در سایر موارد مبلغ به شرکت پرداخت می‌شود.
+                    پرسنل حق بحث یا اعتراض با مشتری در خصوص نحوه پرداخت ندارند.
+                </p>
+            </div>
+
+
+            <div class="rule-item">
+                <span>3️⃣</span>
+                <p>
+                    <strong>تسویه حساب روزانه:</strong>
+                    تمامی حساب‌ها باید همان روز به شرکت پرداخت و تسویه شوند.
+                </p>
+            </div>
+
+
+            <div class="rule-item">
+                <span>4️⃣</span>
+                <p>
+                    <strong>هماهنگی با مشتری:</strong>
+                    پرسنل اجازه ندارند خودشان زمان نظافت را تغییر دهند.
+                    هرگونه تغییر یا کنسلی باید سریعاً به شرکت اطلاع داده شود.
+                </p>
+            </div>
+
+
+            <div class="rule-item">
+                <span>5️⃣</span>
+                <p>
+                    <strong>ارتباط مستقیم مشتری با پرسنل:</strong>
+                    قبل از هرگونه هماهنگی مستقیم با مشتری، شرکت باید در جریان قرار گیرد.
+                    هماهنگی مستقیم بدون اطلاع شرکت موجب کسر درصد و کاهش کارهای محوله خواهد شد.
+                </p>
+            </div>
+
+
+            <div class="rule-item">
+                <span>6️⃣</span>
+                <p>
+                    <strong>حضور به موقع:</strong>
+                    پرسنل موظف‌اند در زمان مقرر در محل کار حاضر شوند.
+                </p>
+            </div>
+
+
+            <div class="rule-item">
+                <span>7️⃣</span>
+                <p>
+                    <strong>تحویل کار به مشتری:</strong>
+                    پس از پایان کار، نتیجه نظافت باید به نماینده یا یکی
+                    از اعضای ساختمان تحویل داده شود و تأیید گرفته شود.
+                </p>
+            </div>
+
+
+            <div class="rule-item">
+                <span>8️⃣</span>
+                <p>
+                    <strong>پرداخت درصد شرکت:</strong>
+                    پرسنل موظف است از کل مبلغ دریافتی به شرکت درصد بدهد.
+                </p>
+            </div>
+
+
+            <div class="rule-item">
+                <span>9️⃣</span>
+                <p>
+                    <strong>کیفیت کار:</strong>
+                    کیفیت کار باید به‌گونه‌ای باشد که مشتری رضایت کامل داشته باشد.
+                </p>
+            </div>
+
+
+            <div class="rule-item">
+                <span>🔟</span>
+                <p>
+                    <strong>مرخصی:</strong>
+                    پرسنل در هر ماه حداکثر دو روز مرخصی دارند.
+                    جمعه‌ها نیز به صورت یک هفته در میان مرخصی در نظر گرفته می‌شود.
+                </p>
+            </div>
+
+
+            <div class="rule-item">
+                <span>1️⃣1️⃣</span>
+                <p>
+                    <strong>حضور خانم‌ها در محل کار:</strong>
+                    خانم‌ها موظف‌اند فقط در کارهایی شرکت کنند که در محل
+                    یک نفر خانم دیگر حضور داشته باشد.
+                </p>
+            </div>
+
+
+        </div>
+
+
+        <div class="rules-confirm">
+
+            <label class="rules-checkbox">
+
+                <input
+                    type="checkbox"
+                    id="acceptRules">
+
+                <span>
+                    تمام شرایط و قوانین همکاری شرکت را مطالعه کردم و می‌پذیرم.
+                </span>
+
+            </label>
+
+
+            <button
+                type="button"
+                id="acceptRulesButton"
+                class="accept-rules-button">
+
+                تأیید و پذیرش قوانین
+
+            </button>
+
+
+            <p
+                id="rulesConfirmResult"
+                class="rules-confirm-result">
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         اطلاعیه‌ها
+    ========================== -->
+
+    <section
+        class="panel-section"
+        id="announcementsSection">
+
+        <div class="section-header">
+
+            <span class="section-icon">
+                📢
+            </span>
+
+            <div>
+
+                <h3>
+                    اطلاعیه‌ها
+                </h3>
+
+                <p>
+                    آخرین اطلاعیه‌های شرکت
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div id="announcementsContainer">
+
+            <div class="empty-state">
+
+                <span>
+                    📢
+                </span>
+
+                <p>
+                    در حال حاضر اطلاعیه‌ای ثبت نشده است.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         یادآوری
+    ========================== -->
+
+    <div class="worker-note">
+
+        <span class="note-icon">
+            🔔
+        </span>
+
+        <div>
+
+            <strong>
+                توجه
+            </strong>
+
+            <p>
+                اطلاعات این پنل فقط برای پرسنل ثبت‌شده شرکت قابل مشاهده است.
+            </p>
+
+        </div>
+
+    </div>
+
+
+</main>
+
+
+<!-- =========================
+     فوتر
+========================== -->
+
+<footer class="worker-footer">
+
+    <div class="footer-company">
+        شرکت خدماتی نظافتی تبریز انتخاب نیک
+    </div>
+
+    <div class="footer-address">
+        چهارراه ابوریحان، مجتمع تجاری ابوریحان، طبقه بالا، واحد A7
+    </div>
+
+    <div class="footer-copy">
+        تمامی حقوق این سامانه محفوظ است.
+    </div>
+
+</footer>
+
+</div><!-- =========================
+     JavaScript
+========================== --><script src="js/worker.js"></script></body>
+</html>

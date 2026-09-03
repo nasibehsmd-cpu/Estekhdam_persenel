@@ -1,0 +1,1807 @@
+document.addEventListener("DOMContentLoaded", function () {
+
+    const API_URL =
+        "https://script.google.com/macros/s/AKfycbw6Y_VxPhvyyyvzK5giHgyAZ4Ff1o72M2R5MAbCbV8TRYVqprc7ozbTOwKfUZwrzR5Pwg/exec";
+
+    const workerCode =
+        sessionStorage.getItem("workerCode");
+
+    const workerInfoRaw =
+        sessionStorage.getItem("workerInfo");
+
+
+
+
+    /* =========================================
+       ارسال پیام به شرکت
+    ========================================= */
+
+    const messageForm = document.getElementById("messageForm");
+    const messageResult = document.getElementById("messageResult");
+
+    if (messageForm) {
+
+        messageForm.addEventListener("submit", function (event) {
+
+            event.preventDefault();
+
+            const message = document.getElementById("workerMessage").value.trim();
+            const file = document.getElementById("receiptImage").files[0];
+
+            if (!message) {
+                messageResult.textContent = "لطفاً متن پیام را وارد کنید.";
+                return;
+            }
+
+            messageResult.textContent = "⏳ در حال ارسال پیام...";
+
+            const sendMessage = function (imageBase64, imageMimeType, imageName) {
+
+                fetch(API_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "text/plain;charset=utf-8"
+                    },
+                    body: JSON.stringify({
+                        action: "sendMessage",
+                        workerCode: workerCode,
+                        message: message,
+                        imageBase64: imageBase64 || "",
+                        imageMimeType: imageMimeType || "",
+                        imageName: imageName || ""
+                    })
+                })
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error("HTTP " + response.status);
+                    }
+                    return response.json();
+                })
+                .then(function (result) {
+                    if (!result.success) {
+                        throw new Error(result.message || "ارسال پیام انجام نشد.");
+                    }
+                    messageResult.textContent = "✅ پیام با موفقیت ارسال شد.";
+                    messageForm.reset();
+                    if (receiptPreview) {
+                        receiptPreview.innerHTML = "";
+                    }
+                })
+                .catch(function (error) {
+                    console.error("خطا در ارسال پیام:", error);
+                    messageResult.textContent = "❌ ارسال پیام انجام نشد.";
+                });
+            };
+
+            if (!file) {
+                sendMessage("", "", "");
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function () {
+                const base64 = reader.result.split(",")[1];
+                sendMessage(base64, file.type, file.name);
+            };
+
+            reader.onerror = function () {
+                messageResult.textContent = "❌ خواندن عکس انجام نشد.";
+            };
+
+            reader.readAsDataURL(file);
+
+        });
+
+    }
+
+    /* =========================================
+       بررسی ورود پرسنل
+    ========================================= */
+
+    if (!workerCode) {
+        window.location.href = "login.html";
+        return;
+    }
+
+
+
+    function markJobReceivedRequest(jobRow) {
+
+        return fetch(API_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "text/plain;charset=utf-8"
+            },
+            body: JSON.stringify({
+                action: "markReceived",
+                workerCode: workerCode,
+                jobRow: jobRow
+            })
+        })
+        .then(function (response) {
+
+            if (!response.ok) {
+                throw new Error("HTTP " + response.status);
+            }
+
+            return response.json();
+        });
+    }
+
+
+
+    /* =========================================
+       ارسال پیام به شرکت
+    ========================================= */
+
+    const messageForm = document.getElementById("messageForm");
+    const messageResult = document.getElementById("messageResult");
+
+    if (messageForm) {
+
+        messageForm.addEventListener("submit", function (event) {
+
+            event.preventDefault();
+
+            const message = document.getElementById("workerMessage").value.trim();
+            const file = document.getElementById("receiptImage").files[0];
+
+            if (!message) {
+                messageResult.textContent = "لطفاً متن پیام را وارد کنید.";
+                return;
+            }
+
+            messageResult.textContent = "⏳ در حال ارسال پیام...";
+
+            const sendMessage = function (imageBase64, imageMimeType, imageName) {
+
+                fetch(API_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "text/plain;charset=utf-8"
+                    },
+                    body: JSON.stringify({
+                        action: "sendMessage",
+                        workerCode: workerCode,
+                        message: message,
+                        imageBase64: imageBase64 || "",
+                        imageMimeType: imageMimeType || "",
+                        imageName: imageName || ""
+                    })
+                })
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error("HTTP " + response.status);
+                    }
+                    return response.json();
+                })
+                .then(function (result) {
+                    if (!result.success) {
+                        throw new Error(result.message || "ارسال پیام انجام نشد.");
+                    }
+                    messageResult.textContent = "✅ پیام با موفقیت ارسال شد.";
+                    messageForm.reset();
+                    if (receiptPreview) {
+                        receiptPreview.innerHTML = "";
+                    }
+                })
+                .catch(function (error) {
+                    console.error("خطا در ارسال پیام:", error);
+                    messageResult.textContent = "❌ ارسال پیام انجام نشد.";
+                });
+            };
+
+            if (!file) {
+                sendMessage("", "", "");
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function () {
+                const base64 = reader.result.split(",")[1];
+                sendMessage(base64, file.type, file.name);
+            };
+
+            reader.onerror = function () {
+                messageResult.textContent = "❌ خواندن عکس انجام نشد.";
+            };
+
+            reader.readAsDataURL(file);
+
+        });
+
+    }
+
+    /* =========================================
+       ابزار عمومی ارتباط با API
+    ========================================= */
+
+    function apiRequest(action) {
+
+        const url =
+            API_URL +
+            "?action=" +
+            encodeURIComponent(action) +
+            "&workerCode=" +
+            encodeURIComponent(workerCode);
+
+        return fetch(url)
+            .then(function (response) {
+
+                if (!response.ok) {
+                    throw new Error("HTTP " + response.status);
+                }
+
+                return response.json();
+            });
+    }
+
+
+
+
+    /* =========================================
+       ارسال پیام به شرکت
+    ========================================= */
+
+    const messageForm = document.getElementById("messageForm");
+    const messageResult = document.getElementById("messageResult");
+
+    if (messageForm) {
+
+        messageForm.addEventListener("submit", function (event) {
+
+            event.preventDefault();
+
+            const message = document.getElementById("workerMessage").value.trim();
+            const file = document.getElementById("receiptImage").files[0];
+
+            if (!message) {
+                messageResult.textContent = "لطفاً متن پیام را وارد کنید.";
+                return;
+            }
+
+            messageResult.textContent = "⏳ در حال ارسال پیام...";
+
+            const sendMessage = function (imageBase64, imageMimeType, imageName) {
+
+                fetch(API_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "text/plain;charset=utf-8"
+                    },
+                    body: JSON.stringify({
+                        action: "sendMessage",
+                        workerCode: workerCode,
+                        message: message,
+                        imageBase64: imageBase64 || "",
+                        imageMimeType: imageMimeType || "",
+                        imageName: imageName || ""
+                    })
+                })
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error("HTTP " + response.status);
+                    }
+                    return response.json();
+                })
+                .then(function (result) {
+                    if (!result.success) {
+                        throw new Error(result.message || "ارسال پیام انجام نشد.");
+                    }
+                    messageResult.textContent = "✅ پیام با موفقیت ارسال شد.";
+                    messageForm.reset();
+                    if (receiptPreview) {
+                        receiptPreview.innerHTML = "";
+                    }
+                })
+                .catch(function (error) {
+                    console.error("خطا در ارسال پیام:", error);
+                    messageResult.textContent = "❌ ارسال پیام انجام نشد.";
+                });
+            };
+
+            if (!file) {
+                sendMessage("", "", "");
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function () {
+                const base64 = reader.result.split(",")[1];
+                sendMessage(base64, file.type, file.name);
+            };
+
+            reader.onerror = function () {
+                messageResult.textContent = "❌ خواندن عکس انجام نشد.";
+            };
+
+            reader.readAsDataURL(file);
+
+        });
+
+    }
+
+    /* =========================================
+       منوی پنل
+    ========================================= */
+
+    const menuCards =
+        document.querySelectorAll(".menu-card");
+
+    const panelSections =
+        document.querySelectorAll(".panel-section");
+
+
+    menuCards.forEach(function (card) {
+
+        card.addEventListener("click", function () {
+
+            const sectionName =
+                card.getAttribute("data-section");
+
+            panelSections.forEach(function (section) {
+                section.classList.remove("active");
+            });
+
+
+            const selectedSection =
+                document.getElementById(
+                    sectionName + "Section"
+                );
+
+
+            if (selectedSection) {
+
+                selectedSection.classList.add("active");
+
+                selectedSection.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+
+            }
+
+
+            /* بارگذاری اطلاعات همان بخش */
+
+            if (sectionName === "profile") {
+                loadWorkerInfo();
+            }
+
+            if (sectionName === "jobs") {
+                loadWorkerJobs();
+            }
+
+            if (sectionName === "account") {
+                loadWorkerAccount();
+            }
+
+            if (sectionName === "announcements") {
+                loadAnnouncements();
+            }
+
+        });
+
+    });
+
+
+
+
+    /* =========================================
+       ارسال پیام به شرکت
+    ========================================= */
+
+    const messageForm = document.getElementById("messageForm");
+    const messageResult = document.getElementById("messageResult");
+
+    if (messageForm) {
+
+        messageForm.addEventListener("submit", function (event) {
+
+            event.preventDefault();
+
+            const message = document.getElementById("workerMessage").value.trim();
+            const file = document.getElementById("receiptImage").files[0];
+
+            if (!message) {
+                messageResult.textContent = "لطفاً متن پیام را وارد کنید.";
+                return;
+            }
+
+            messageResult.textContent = "⏳ در حال ارسال پیام...";
+
+            const sendMessage = function (imageBase64, imageMimeType, imageName) {
+
+                fetch(API_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "text/plain;charset=utf-8"
+                    },
+                    body: JSON.stringify({
+                        action: "sendMessage",
+                        workerCode: workerCode,
+                        message: message,
+                        imageBase64: imageBase64 || "",
+                        imageMimeType: imageMimeType || "",
+                        imageName: imageName || ""
+                    })
+                })
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error("HTTP " + response.status);
+                    }
+                    return response.json();
+                })
+                .then(function (result) {
+                    if (!result.success) {
+                        throw new Error(result.message || "ارسال پیام انجام نشد.");
+                    }
+                    messageResult.textContent = "✅ پیام با موفقیت ارسال شد.";
+                    messageForm.reset();
+                    if (receiptPreview) {
+                        receiptPreview.innerHTML = "";
+                    }
+                })
+                .catch(function (error) {
+                    console.error("خطا در ارسال پیام:", error);
+                    messageResult.textContent = "❌ ارسال پیام انجام نشد.";
+                });
+            };
+
+            if (!file) {
+                sendMessage("", "", "");
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function () {
+                const base64 = reader.result.split(",")[1];
+                sendMessage(base64, file.type, file.name);
+            };
+
+            reader.onerror = function () {
+                messageResult.textContent = "❌ خواندن عکس انجام نشد.";
+            };
+
+            reader.readAsDataURL(file);
+
+        });
+
+    }
+
+    /* =========================================
+       خروج
+    ========================================= */
+
+    const logoutButton =
+        document.getElementById("logoutButton");
+
+
+    if (logoutButton) {
+
+        logoutButton.addEventListener("click", function () {
+
+            sessionStorage.removeItem("workerCode");
+            sessionStorage.removeItem("workerInfo");
+
+            window.location.href = "login.html";
+
+        });
+
+    }
+
+
+
+
+    /* =========================================
+       ارسال پیام به شرکت
+    ========================================= */
+
+    const messageForm = document.getElementById("messageForm");
+    const messageResult = document.getElementById("messageResult");
+
+    if (messageForm) {
+
+        messageForm.addEventListener("submit", function (event) {
+
+            event.preventDefault();
+
+            const message = document.getElementById("workerMessage").value.trim();
+            const file = document.getElementById("receiptImage").files[0];
+
+            if (!message) {
+                messageResult.textContent = "لطفاً متن پیام را وارد کنید.";
+                return;
+            }
+
+            messageResult.textContent = "⏳ در حال ارسال پیام...";
+
+            const sendMessage = function (imageBase64, imageMimeType, imageName) {
+
+                fetch(API_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "text/plain;charset=utf-8"
+                    },
+                    body: JSON.stringify({
+                        action: "sendMessage",
+                        workerCode: workerCode,
+                        message: message,
+                        imageBase64: imageBase64 || "",
+                        imageMimeType: imageMimeType || "",
+                        imageName: imageName || ""
+                    })
+                })
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error("HTTP " + response.status);
+                    }
+                    return response.json();
+                })
+                .then(function (result) {
+                    if (!result.success) {
+                        throw new Error(result.message || "ارسال پیام انجام نشد.");
+                    }
+                    messageResult.textContent = "✅ پیام با موفقیت ارسال شد.";
+                    messageForm.reset();
+                    if (receiptPreview) {
+                        receiptPreview.innerHTML = "";
+                    }
+                })
+                .catch(function (error) {
+                    console.error("خطا در ارسال پیام:", error);
+                    messageResult.textContent = "❌ ارسال پیام انجام نشد.";
+                });
+            };
+
+            if (!file) {
+                sendMessage("", "", "");
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function () {
+                const base64 = reader.result.split(",")[1];
+                sendMessage(base64, file.type, file.name);
+            };
+
+            reader.onerror = function () {
+                messageResult.textContent = "❌ خواندن عکس انجام نشد.";
+            };
+
+            reader.readAsDataURL(file);
+
+        });
+
+    }
+
+    /* =========================================
+       اطلاعات پرسنل
+    ========================================= */
+
+    function loadWorkerInfo() {
+
+        const workerName =
+            document.getElementById("workerName");
+
+        const workerCodeElement =
+            document.getElementById("workerCode");
+
+        const workerPhone =
+            document.getElementById("workerPhone");
+
+        const workerAddress =
+            document.getElementById("workerAddress");
+
+        const workerStatus =
+            document.getElementById("workerStatus");
+
+        const workerStartDate =
+            document.getElementById("workerStartDate");
+
+        const workerWelcome =
+            document.getElementById("workerWelcome");
+
+
+        let worker = null;
+
+
+        if (workerInfoRaw) {
+
+            try {
+                worker = JSON.parse(workerInfoRaw);
+            } catch (error) {
+                console.error(
+                    "خطا در خواندن اطلاعات پرسنل:",
+                    error
+                );
+            }
+
+        }
+
+
+        if (!worker) {
+            return;
+        }
+
+
+        if (workerName) {
+            workerName.textContent =
+                worker["نام و نام خانوادگی"] || "---";
+        }
+
+
+        if (workerCodeElement) {
+            workerCodeElement.textContent =
+                worker["کد پیگیری"] || workerCode;
+        }
+
+
+        if (workerPhone) {
+            workerPhone.textContent =
+                worker["شماره موبایل"] || "---";
+        }
+
+
+        if (workerAddress) {
+            workerAddress.textContent =
+                worker["آدرس"] || "---";
+        }
+
+
+        if (workerStatus) {
+            workerStatus.textContent =
+                worker["وضعیت"] || "---";
+        }
+
+
+        if (workerStartDate) {
+            workerStartDate.textContent =
+                worker["تاریخ شروع همکاری"] || "---";
+        }
+
+
+        if (workerWelcome) {
+
+            workerWelcome.textContent =
+                "خوش آمدید، " +
+                (worker["نام و نام خانوادگی"] || "پرسنل");
+
+        }
+
+    }
+
+
+
+
+    /* =========================================
+       ارسال پیام به شرکت
+    ========================================= */
+
+    const messageForm = document.getElementById("messageForm");
+    const messageResult = document.getElementById("messageResult");
+
+    if (messageForm) {
+
+        messageForm.addEventListener("submit", function (event) {
+
+            event.preventDefault();
+
+            const message = document.getElementById("workerMessage").value.trim();
+            const file = document.getElementById("receiptImage").files[0];
+
+            if (!message) {
+                messageResult.textContent = "لطفاً متن پیام را وارد کنید.";
+                return;
+            }
+
+            messageResult.textContent = "⏳ در حال ارسال پیام...";
+
+            const sendMessage = function (imageBase64, imageMimeType, imageName) {
+
+                fetch(API_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "text/plain;charset=utf-8"
+                    },
+                    body: JSON.stringify({
+                        action: "sendMessage",
+                        workerCode: workerCode,
+                        message: message,
+                        imageBase64: imageBase64 || "",
+                        imageMimeType: imageMimeType || "",
+                        imageName: imageName || ""
+                    })
+                })
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error("HTTP " + response.status);
+                    }
+                    return response.json();
+                })
+                .then(function (result) {
+                    if (!result.success) {
+                        throw new Error(result.message || "ارسال پیام انجام نشد.");
+                    }
+                    messageResult.textContent = "✅ پیام با موفقیت ارسال شد.";
+                    messageForm.reset();
+                    if (receiptPreview) {
+                        receiptPreview.innerHTML = "";
+                    }
+                })
+                .catch(function (error) {
+                    console.error("خطا در ارسال پیام:", error);
+                    messageResult.textContent = "❌ ارسال پیام انجام نشد.";
+                });
+            };
+
+            if (!file) {
+                sendMessage("", "", "");
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function () {
+                const base64 = reader.result.split(",")[1];
+                sendMessage(base64, file.type, file.name);
+            };
+
+            reader.onerror = function () {
+                messageResult.textContent = "❌ خواندن عکس انجام نشد.";
+            };
+
+            reader.readAsDataURL(file);
+
+        });
+
+    }
+
+    /* =========================================
+       کارهای من
+    ========================================= */
+
+    function loadWorkerJobs() {
+
+        const container =
+            document.getElementById("jobsContainer");
+
+        if (!container) {
+            return;
+        }
+
+
+        container.innerHTML = `
+            <div class="empty-state">
+                <span>⏳</span>
+                <p>در حال دریافت کارهای شما...</p>
+            </div>
+        `;
+
+
+        apiRequest("jobs")
+
+            .then(function (result) {
+
+                console.log("پاسخ jobs:", result);
+
+
+                if (!result.success) {
+
+                    throw new Error(
+                        result.message ||
+                        "خطا در دریافت کارها"
+                    );
+
+                }
+
+
+                const jobs =
+                    result.data || [];
+
+
+                if (!jobs.length) {
+
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <span>🧹</span>
+                            <p>
+                                هنوز کاری برای شما ثبت نشده است.
+                            </p>
+                        </div>
+                    `;
+
+                    return;
+                }
+
+
+                container.innerHTML = "";
+
+
+                jobs.forEach(function (job) {
+
+                    const card =
+                        document.createElement("div");
+
+                    card.className = "job-card";
+
+
+                    card.innerHTML = `
+
+                        <div class="job-details">
+
+                            <div class="job-detail">
+                                <span>روز</span>
+                                <strong>${job["روز"] || job.day || "---"}</strong>
+                            </div>
+
+                            <div class="job-detail">
+                                <span>تاریخ</span>
+                                <strong>${job["تاریخ"] || job.date || "---"}</strong>
+                            </div>
+
+                            <div class="job-detail">
+                                <span>مشتری</span>
+                                <strong>${job["مشتری"] || job["نام مشتری"] || job.customer || "---"}</strong>
+                            </div>
+
+                            <div class="job-detail">
+                                <span>آدرس</span>
+                                <strong>${job["آدرس"] || job.address || "---"}</strong>
+                            </div>
+
+                            <div class="job-detail">
+                                <span>مبلغ</span>
+                                <strong>${job["مبلغ"] || job.amount || "---"}</strong>
+                            </div>
+
+                            <div class="job-detail">
+                                <span>ثابت</span>
+                                <strong><a href="tel:${job["ثابت"] || ""}">${job["ثابت"] || "---"}</a></strong>
+                            </div>
+
+                            <div class="job-detail">
+                                <span>موبایل مشتری</span>
+                                <strong><a href="tel:${job["موبایل مشتری"] || job["شماره موبایل"] || job.mobile || ""}">${job["موبایل مشتری"] || job["شماره موبایل"] || job.mobile || "---"}</a></strong>
+                            </div>
+
+                            <div class="job-detail">
+                                <span>پرسنل معرفی شده</span>
+                                <strong>${job["پرسنل معرفی شده"] || "---"}</strong>
+                            </div>
+
+                            <div class="job-detail">
+                                <span>نوع کار</span>
+                                <strong>${job["نوع کار"] || job["نوع خدمت"] || job.type || "---"}</strong>
+                            </div>
+
+                            <div class="job-detail">
+                                <span>تایم</span>
+                                <strong>${job["تایم"] || job["ساعت"] || job.time || "---"}</strong>
+                            </div>
+
+                            <div class="job-detail">
+                                <span>توضیحات</span>
+                                <strong>${job["توضیحات"] || job.description || "---"}</strong>
+                            </div>
+
+                            <div class="job-detail">
+                                <span>حساب</span>
+                                <strong>${job["حساب"] || job.account || "---"}</strong>
+                            </div>
+
+                            <div class="job-detail">
+                                <span>دریافت شد</span>
+                                <strong>
+                                    <button type="button" class="received-btn" data-row="${job["_row"] || ""}" ${job["دریافت شد"] ? "disabled" : ""}>
+                                        ${job["دریافت شد"] ? "✓ دریافت شد" : "☐ دریافت شد"}
+                                    </button>
+                                </strong>
+
+                        </div>
+
+                    `;
+
+
+                    const receivedBtn = card.querySelector(".received-btn");
+
+                    if (receivedBtn && !receivedBtn.disabled) {
+                        receivedBtn.addEventListener("click", function () {
+
+                            const jobRow = this.getAttribute("data-row");
+
+                            if (!jobRow) {
+                                alert("شماره ردیف کار پیدا نشد.");
+                                return;
+                            }
+
+                            this.disabled = true;
+                            this.textContent = "⏳ در حال ثبت...";
+
+                            markJobReceivedRequest(jobRow)
+                                .then(function (result) {
+
+                                    if (!result.success) {
+                                        throw new Error(result.message || "ثبت دریافت انجام نشد.");
+                                    }
+
+                                    receivedBtn.textContent = "✓ دریافت شد";
+                                })
+                                .catch(function (error) {
+
+                                    console.error("خطا در ثبت دریافت:", error);
+                                    receivedBtn.disabled = false;
+                                    receivedBtn.textContent = "☐ دریافت شد";
+                                    alert("ثبت دریافت انجام نشد.");
+                                });
+                        });
+                    }
+
+                    container.appendChild(card);
+
+                });
+
+            })
+
+            .catch(function (error) {
+
+                console.error(
+                    "خطا در دریافت کارها:",
+                    error
+                );
+
+
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <span>⚠️</span>
+                        <p>
+                            خطا در دریافت کارها.
+                        </p>
+                    </div>
+                `;
+
+            });
+
+    }
+
+
+
+
+    /* =========================================
+       ارسال پیام به شرکت
+    ========================================= */
+
+    const messageForm = document.getElementById("messageForm");
+    const messageResult = document.getElementById("messageResult");
+
+    if (messageForm) {
+
+        messageForm.addEventListener("submit", function (event) {
+
+            event.preventDefault();
+
+            const message = document.getElementById("workerMessage").value.trim();
+            const file = document.getElementById("receiptImage").files[0];
+
+            if (!message) {
+                messageResult.textContent = "لطفاً متن پیام را وارد کنید.";
+                return;
+            }
+
+            messageResult.textContent = "⏳ در حال ارسال پیام...";
+
+            const sendMessage = function (imageBase64, imageMimeType, imageName) {
+
+                fetch(API_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "text/plain;charset=utf-8"
+                    },
+                    body: JSON.stringify({
+                        action: "sendMessage",
+                        workerCode: workerCode,
+                        message: message,
+                        imageBase64: imageBase64 || "",
+                        imageMimeType: imageMimeType || "",
+                        imageName: imageName || ""
+                    })
+                })
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error("HTTP " + response.status);
+                    }
+                    return response.json();
+                })
+                .then(function (result) {
+                    if (!result.success) {
+                        throw new Error(result.message || "ارسال پیام انجام نشد.");
+                    }
+                    messageResult.textContent = "✅ پیام با موفقیت ارسال شد.";
+                    messageForm.reset();
+                    if (receiptPreview) {
+                        receiptPreview.innerHTML = "";
+                    }
+                })
+                .catch(function (error) {
+                    console.error("خطا در ارسال پیام:", error);
+                    messageResult.textContent = "❌ ارسال پیام انجام نشد.";
+                });
+            };
+
+            if (!file) {
+                sendMessage("", "", "");
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function () {
+                const base64 = reader.result.split(",")[1];
+                sendMessage(base64, file.type, file.name);
+            };
+
+            reader.onerror = function () {
+                messageResult.textContent = "❌ خواندن عکس انجام نشد.";
+            };
+
+            reader.readAsDataURL(file);
+
+        });
+
+    }
+
+    /* =========================================
+       حساب من
+    ========================================= */
+
+    function loadWorkerAccount() {
+
+        const accountElement =
+            document.getElementById("workerAccount");
+
+        if (!accountElement) {
+            return;
+        }
+
+
+        accountElement.textContent =
+            "در حال دریافت...";
+
+
+        apiRequest("accountTotal")
+
+            .then(function (result) {
+
+                console.log(
+                    "پاسخ accountTotal:",
+                    result
+                );
+
+
+                if (!result.success) {
+
+                    throw new Error(
+                        result.message ||
+                        "خطا در دریافت حساب"
+                    );
+
+                }
+
+
+                let total = 0;
+
+
+                if (result.data) {
+
+                    if (
+                        typeof result.data === "object"
+                    ) {
+
+                        total =
+                            result.data.total ||
+                            result.data["مجموع"] ||
+                            result.data.amount ||
+                            0;
+
+                    } else {
+
+                        total = result.data;
+
+                    }
+
+                }
+
+
+                accountElement.textContent =
+                    Number(total || 0)
+                        .toLocaleString("fa-IR") +
+                    " ریال";
+
+            })
+
+            .catch(function (error) {
+
+                console.error(
+                    "خطا در دریافت حساب:",
+                    error
+                );
+
+
+                accountElement.textContent =
+                    "خطا در دریافت حساب";
+
+            });
+
+    }
+
+
+
+
+    /* =========================================
+       ارسال پیام به شرکت
+    ========================================= */
+
+    const messageForm = document.getElementById("messageForm");
+    const messageResult = document.getElementById("messageResult");
+
+    if (messageForm) {
+
+        messageForm.addEventListener("submit", function (event) {
+
+            event.preventDefault();
+
+            const message = document.getElementById("workerMessage").value.trim();
+            const file = document.getElementById("receiptImage").files[0];
+
+            if (!message) {
+                messageResult.textContent = "لطفاً متن پیام را وارد کنید.";
+                return;
+            }
+
+            messageResult.textContent = "⏳ در حال ارسال پیام...";
+
+            const sendMessage = function (imageBase64, imageMimeType, imageName) {
+
+                fetch(API_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "text/plain;charset=utf-8"
+                    },
+                    body: JSON.stringify({
+                        action: "sendMessage",
+                        workerCode: workerCode,
+                        message: message,
+                        imageBase64: imageBase64 || "",
+                        imageMimeType: imageMimeType || "",
+                        imageName: imageName || ""
+                    })
+                })
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error("HTTP " + response.status);
+                    }
+                    return response.json();
+                })
+                .then(function (result) {
+                    if (!result.success) {
+                        throw new Error(result.message || "ارسال پیام انجام نشد.");
+                    }
+                    messageResult.textContent = "✅ پیام با موفقیت ارسال شد.";
+                    messageForm.reset();
+                    if (receiptPreview) {
+                        receiptPreview.innerHTML = "";
+                    }
+                })
+                .catch(function (error) {
+                    console.error("خطا در ارسال پیام:", error);
+                    messageResult.textContent = "❌ ارسال پیام انجام نشد.";
+                });
+            };
+
+            if (!file) {
+                sendMessage("", "", "");
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function () {
+                const base64 = reader.result.split(",")[1];
+                sendMessage(base64, file.type, file.name);
+            };
+
+            reader.onerror = function () {
+                messageResult.textContent = "❌ خواندن عکس انجام نشد.";
+            };
+
+            reader.readAsDataURL(file);
+
+        });
+
+    }
+
+    /* =========================================
+       اطلاعیه‌ها
+    ========================================= */
+
+    function loadAnnouncements() {
+
+        const container =
+            document.getElementById(
+                "announcementsContainer"
+            );
+
+        if (!container) {
+            return;
+        }
+
+
+        container.innerHTML = `
+            <div class="empty-state">
+                <span>⏳</span>
+                <p>
+                    در حال دریافت اطلاعیه‌ها...
+                </p>
+            </div>
+        `;
+
+
+        fetch(
+            API_URL +
+            "?action=announcements"
+        )
+
+            .then(function (response) {
+
+                if (!response.ok) {
+                    throw new Error(
+                        "HTTP " + response.status
+                    );
+                }
+
+                return response.json();
+
+            })
+
+            .then(function (result) {
+
+                console.log(
+                    "پاسخ announcements:",
+                    result
+                );
+
+
+                if (!result.success) {
+
+                    throw new Error(
+                        result.message ||
+                        "خطا در دریافت اطلاعیه‌ها"
+                    );
+
+                }
+
+
+                const announcements =
+                    result.data || [];
+
+
+                if (!announcements.length) {
+
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <span>📢</span>
+                            <p>
+                                در حال حاضر اطلاعیه‌ای ثبت نشده است.
+                            </p>
+                        </div>
+                    `;
+
+                    return;
+                }
+
+
+                container.innerHTML = "";
+
+
+                announcements.forEach(
+                    function (item) {
+
+                        const card =
+                            document.createElement("div");
+
+                        card.className =
+                            "announcement-card";
+
+
+                        const title =
+                            item["عنوان"] ||
+                            item.title ||
+                            "اطلاعیه شرکت";
+
+
+                        const text =
+                            item["متن اطلاعیه"] ||
+                            item["متن"] ||
+                            item.text ||
+                            "";
+
+
+                        const date =
+                            item["تاریخ"] ||
+                            item.date ||
+                            "";
+
+
+                        card.innerHTML = `
+
+                            <h4>
+                                ${title}
+                            </h4>
+
+                            <p>
+                                ${text}
+                            </p>
+
+                            <span class="announcement-date">
+                                ${date}
+                            </span>
+
+                        `;
+
+
+                    const receivedBtn = card.querySelector(".received-btn");
+
+                    if (receivedBtn && !receivedBtn.disabled) {
+                        receivedBtn.addEventListener("click", function () {
+
+                            const jobRow = this.getAttribute("data-row");
+
+                            if (!jobRow) {
+                                alert("شماره ردیف کار پیدا نشد.");
+                                return;
+                            }
+
+                            this.disabled = true;
+                            this.textContent = "⏳ در حال ثبت...";
+
+                            markJobReceivedRequest(jobRow)
+                                .then(function (result) {
+
+                                    if (!result.success) {
+                                        throw new Error(result.message || "ثبت دریافت انجام نشد.");
+                                    }
+
+                                    receivedBtn.textContent = "✓ دریافت شد";
+                                })
+                                .catch(function (error) {
+
+                                    console.error("خطا در ثبت دریافت:", error);
+                                    receivedBtn.disabled = false;
+                                    receivedBtn.textContent = "☐ دریافت شد";
+                                    alert("ثبت دریافت انجام نشد.");
+                                });
+                        });
+                    }
+
+                        container.appendChild(card);
+
+                    }
+                );
+
+            })
+
+            .catch(function (error) {
+
+                console.error(
+                    "خطا در دریافت اطلاعیه‌ها:",
+                    error
+                );
+
+
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <span>⚠️</span>
+                        <p>
+                            خطا در دریافت اطلاعیه‌ها.
+                        </p>
+                    </div>
+                `;
+
+            });
+
+    }
+
+
+
+
+    /* =========================================
+       ارسال پیام به شرکت
+    ========================================= */
+
+    const messageForm = document.getElementById("messageForm");
+    const messageResult = document.getElementById("messageResult");
+
+    if (messageForm) {
+
+        messageForm.addEventListener("submit", function (event) {
+
+            event.preventDefault();
+
+            const message = document.getElementById("workerMessage").value.trim();
+            const file = document.getElementById("receiptImage").files[0];
+
+            if (!message) {
+                messageResult.textContent = "لطفاً متن پیام را وارد کنید.";
+                return;
+            }
+
+            messageResult.textContent = "⏳ در حال ارسال پیام...";
+
+            const sendMessage = function (imageBase64, imageMimeType, imageName) {
+
+                fetch(API_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "text/plain;charset=utf-8"
+                    },
+                    body: JSON.stringify({
+                        action: "sendMessage",
+                        workerCode: workerCode,
+                        message: message,
+                        imageBase64: imageBase64 || "",
+                        imageMimeType: imageMimeType || "",
+                        imageName: imageName || ""
+                    })
+                })
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error("HTTP " + response.status);
+                    }
+                    return response.json();
+                })
+                .then(function (result) {
+                    if (!result.success) {
+                        throw new Error(result.message || "ارسال پیام انجام نشد.");
+                    }
+                    messageResult.textContent = "✅ پیام با موفقیت ارسال شد.";
+                    messageForm.reset();
+                    if (receiptPreview) {
+                        receiptPreview.innerHTML = "";
+                    }
+                })
+                .catch(function (error) {
+                    console.error("خطا در ارسال پیام:", error);
+                    messageResult.textContent = "❌ ارسال پیام انجام نشد.";
+                });
+            };
+
+            if (!file) {
+                sendMessage("", "", "");
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function () {
+                const base64 = reader.result.split(",")[1];
+                sendMessage(base64, file.type, file.name);
+            };
+
+            reader.onerror = function () {
+                messageResult.textContent = "❌ خواندن عکس انجام نشد.";
+            };
+
+            reader.readAsDataURL(file);
+
+        });
+
+    }
+
+    /* =========================================
+       پیش‌نمایش عکس رسید
+    ========================================= */
+
+    const receiptImage =
+        document.getElementById("receiptImage");
+
+    const receiptPreview =
+        document.getElementById("receiptPreview");
+
+
+    if (receiptImage && receiptPreview) {
+
+        receiptImage.addEventListener(
+            "change",
+            function () {
+
+                receiptPreview.innerHTML = "";
+
+
+                const file =
+                    this.files[0];
+
+
+                if (!file) {
+                    return;
+                }
+
+
+                if (!file.type.startsWith("image/")) {
+
+                    receiptPreview.textContent =
+                        "لطفاً فقط یک فایل تصویری انتخاب کنید.";
+
+                    this.value = "";
+
+                    return;
+                }
+
+
+                const image =
+                    document.createElement("img");
+
+
+                image.src =
+                    URL.createObjectURL(file);
+
+
+                image.alt =
+                    "پیش‌نمایش رسید واریز";
+
+
+                image.style.maxWidth = "100%";
+                image.style.maxHeight = "300px";
+                image.style.marginTop = "15px";
+                image.style.borderRadius = "12px";
+
+
+                receiptPreview.appendChild(image);
+
+            }
+        );
+
+    }
+
+
+
+
+    /* =========================================
+       ارسال پیام به شرکت
+    ========================================= */
+
+    const messageForm = document.getElementById("messageForm");
+    const messageResult = document.getElementById("messageResult");
+
+    if (messageForm) {
+
+        messageForm.addEventListener("submit", function (event) {
+
+            event.preventDefault();
+
+            const message = document.getElementById("workerMessage").value.trim();
+            const file = document.getElementById("receiptImage").files[0];
+
+            if (!message) {
+                messageResult.textContent = "لطفاً متن پیام را وارد کنید.";
+                return;
+            }
+
+            messageResult.textContent = "⏳ در حال ارسال پیام...";
+
+            const sendMessage = function (imageBase64, imageMimeType, imageName) {
+
+                fetch(API_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "text/plain;charset=utf-8"
+                    },
+                    body: JSON.stringify({
+                        action: "sendMessage",
+                        workerCode: workerCode,
+                        message: message,
+                        imageBase64: imageBase64 || "",
+                        imageMimeType: imageMimeType || "",
+                        imageName: imageName || ""
+                    })
+                })
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error("HTTP " + response.status);
+                    }
+                    return response.json();
+                })
+                .then(function (result) {
+                    if (!result.success) {
+                        throw new Error(result.message || "ارسال پیام انجام نشد.");
+                    }
+                    messageResult.textContent = "✅ پیام با موفقیت ارسال شد.";
+                    messageForm.reset();
+                    if (receiptPreview) {
+                        receiptPreview.innerHTML = "";
+                    }
+                })
+                .catch(function (error) {
+                    console.error("خطا در ارسال پیام:", error);
+                    messageResult.textContent = "❌ ارسال پیام انجام نشد.";
+                });
+            };
+
+            if (!file) {
+                sendMessage("", "", "");
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function () {
+                const base64 = reader.result.split(",")[1];
+                sendMessage(base64, file.type, file.name);
+            };
+
+            reader.onerror = function () {
+                messageResult.textContent = "❌ خواندن عکس انجام نشد.";
+            };
+
+            reader.readAsDataURL(file);
+
+        });
+
+    }
+
+    /* =========================================
+       تأیید قوانین
+    ========================================= */
+
+    const acceptRulesButton =
+        document.getElementById(
+            "acceptRulesButton"
+        );
+
+    const acceptRules =
+        document.getElementById("acceptRules");
+
+    const rulesConfirmResult =
+        document.getElementById(
+            "rulesConfirmResult"
+        );
+
+
+    if (acceptRulesButton) {
+
+        acceptRulesButton.addEventListener(
+            "click",
+            function () {
+
+                if (!acceptRules.checked) {
+
+                    rulesConfirmResult.textContent =
+                        "لطفاً ابتدا تیک پذیرش قوانین را بزنید.";
+
+                    rulesConfirmResult.className =
+                        "rules-confirm-result error";
+
+                    return;
+                }
+
+
+                rulesConfirmResult.textContent =
+                    "قوانین همکاری با موفقیت تأیید شد.";
+
+                rulesConfirmResult.className =
+                    "rules-confirm-result success";
+
+
+                acceptRulesButton.disabled =
+                    true;
+
+                acceptRulesButton.textContent =
+                    "قوانین تأیید شد";
+
+            }
+        );
+
+    }
+
+
+
+
+    /* =========================================
+       ارسال پیام به شرکت
+    ========================================= */
+
+    const messageForm = document.getElementById("messageForm");
+    const messageResult = document.getElementById("messageResult");
+
+    if (messageForm) {
+
+        messageForm.addEventListener("submit", function (event) {
+
+            event.preventDefault();
+
+            const message = document.getElementById("workerMessage").value.trim();
+            const file = document.getElementById("receiptImage").files[0];
+
+            if (!message) {
+                messageResult.textContent = "لطفاً متن پیام را وارد کنید.";
+                return;
+            }
+
+            messageResult.textContent = "⏳ در حال ارسال پیام...";
+
+            const sendMessage = function (imageBase64, imageMimeType, imageName) {
+
+                fetch(API_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "text/plain;charset=utf-8"
+                    },
+                    body: JSON.stringify({
+                        action: "sendMessage",
+                        workerCode: workerCode,
+                        message: message,
+                        imageBase64: imageBase64 || "",
+                        imageMimeType: imageMimeType || "",
+                        imageName: imageName || ""
+                    })
+                })
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error("HTTP " + response.status);
+                    }
+                    return response.json();
+                })
+                .then(function (result) {
+                    if (!result.success) {
+                        throw new Error(result.message || "ارسال پیام انجام نشد.");
+                    }
+                    messageResult.textContent = "✅ پیام با موفقیت ارسال شد.";
+                    messageForm.reset();
+                    if (receiptPreview) {
+                        receiptPreview.innerHTML = "";
+                    }
+                })
+                .catch(function (error) {
+                    console.error("خطا در ارسال پیام:", error);
+                    messageResult.textContent = "❌ ارسال پیام انجام نشد.";
+                });
+            };
+
+            if (!file) {
+                sendMessage("", "", "");
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function () {
+                const base64 = reader.result.split(",")[1];
+                sendMessage(base64, file.type, file.name);
+            };
+
+            reader.onerror = function () {
+                messageResult.textContent = "❌ خواندن عکس انجام نشد.";
+            };
+
+            reader.readAsDataURL(file);
+
+        });
+
+    }
+
+    /* =========================================
+       شروع اولیه پنل
+    ========================================= */
+
+    loadWorkerInfo();
+
+    console.log(
+        "پنل پرسنل آماده شد:",
+        workerCode
+    );
+
+});

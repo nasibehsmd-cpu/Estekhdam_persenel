@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="شرکت خدماتی نظافتی تبریز انتخاب نیک">
+
+    <title>شرکت خدماتی نظافتی تبریز انتخاب نیک</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="page">
+
+        <!-- Header -->
+        <header class="header">
+
+            <div class="logo-area">
+
+                <div class="logo-icon">
+                    ✓
+                </div>
+
+                <div class="logo-text">
+                    <h1>انتخاب نیک</h1>
+                    <span>شرکت خدماتی نظافتی تبریز</span>
+                </div>
+
+            </div>
+
+            <a href="login.html" class="login-button">
+                ورود پرسنل
+            </a>
+
+        </header>
+
+
+        <!-- Main -->
+        <main>
+
+            <!-- معرفی شرکت -->
+            <section class="hero">
+
+                <div class="hero-content">
+
+                    <span class="hero-label">
+                        شرکت خدماتی نظافتی تبریز انتخاب نیک
+                    </span>
+
+                    <h2>
+                        نظافت حرفه‌ای
+                        <strong>
+                            در تبریز
+                        </strong>
+                    </h2>
+
+                    <p>
+                        نظافت حرفه‌ای راه‌پله، پارکینگ، منزل،
+                        اداره و خدمات مراسم در تبریز
+                    </p>
+
+                    <p>
+                        ارائه خدمات نظافتی با نیروهای آموزش‌دیده
+                        و متعهد، با پشتیبانی و ضمانت شرکت
+                        انتخاب نیک.
+                    </p>
+
+                </div>
+
+            </section>            <!-- استخدام نیرو -->
+            <section class="section recruitment" id="recruitment">
+
+                <div class="recruitment-box">
+
+                    <div class="recruitment-content">
+
+                        <span class="section-label">
+                            فرصت همکاری
+                        </span>
+
+                        <h2>
+                            استخدام نیروی خدماتی
+                            <strong>(آقا)</strong>
+                        </h2>
+
+                        <p>
+                            به تعداد زیادی همکار آقا جهت همکاری در
+                            شرکت خدماتی نظافتی برای نظافت راه‌پله،
+                            منازل و سایر خدمات نظافتی به‌صورت فوری
+                            نیازمندیم.
+                        </p>
+
+                        <p>
+                            ✅ در صورت وقت‌شناسی، نظم و کیفیت بالای کار،
+                            کار به‌صورت مستمر و برای کل سال فراهم
+                            می‌باشد.
+                        </p>
+
+                        <div class="recruitment-highlight">
+
+                            <span>
+                                حداقل کارهای روزانه
+                            </span>
+
+                            <strong>
+                                ۱۰۰۰۰۰۰ تومان
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="requirements">
+
+                        <h3>
+                            مدارک مورد نیاز
+                        </h3>
+
+                        <ul>
+
+                            <li>
+                                اصل شناسنامه یا کارت ملی جدید
+                            </li>
+
+                            <li class="danger">
+                                ❌ مدارک قدیمی پذیرفته نمی‌شود
+                            </li>
+
+                            <li>
+                                سفته به مبلغ دو میلیون تومان
+                            </li>
+
+                        </ul>
+
+
+                        <div class="office-hours">
+
+                            <h3>
+                                ⏰ ساعت مراجعه به دفتر
+                            </h3>
+
+                            <p>
+                                صبح‌ها:
+                                <strong>
+                                    ۱۰:۳۰ تا ۱۳:۳۰
+                                </strong>
+                            </p>
+
+                            <p>
+                                ساعت تماس:
+                                <strong>
+                                    ۱۰:۳۰ الی ۱۷:۰۰
+                                </strong>
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>            <!-- اطلاعات دفتر -->
+            <section class="section contact" id="contact">
+
+                <div class="section-title">
+
+                    <span>
+                        اطلاعات دفتر
+                    </span>
+
+                    <h2>
+                        راه‌های
+                        <strong>ارتباط با ما</strong>
+                    </h2>
+
+                </div>
+
+
+                <div class="contact-grid">
+
+                    <div class="contact-card">
+
+                        <div class="contact-icon">
+                            📍
+                        </div>
+
+                        <h3>
+                            آدرس دفتر
+                        </h3>
+
+                        <p>
+                            چهارراه ابوریحان،
+                            مجتمع تجاری ابوریحان،
+                            طبقه بالا، واحد A7
+                        </p>
+
+                    </div>
+
+
+                    <div class="contact-card">
+
+                        <div class="contact-icon">
+                            📞
+                        </div>
+
+                        <h3>
+                            شماره تماس
+                        </h3>
+
+                        <p>
+                            <a href="tel:09149072049">۰۹۱۴۹۰۷۲۰۴۹ — صمدی</a>
+                        </p>
+
+                    </div>
+
+
+                    <div class="contact-card">
+
+                        <div class="contact-icon">
+                            🕐
+                        </div>
+
+                        <h3>
+                            ساعت تماس
+                        </h3>
+
+                        <p>
+                            ۱۰:۳۰ تا ۱۷:۰۰
+                        </p>
+
+                    </div>
+
+
+                    <div class="contact-card">
+
+                        <div class="contact-icon">
+                            🕐
+                        </div>
+
+                        <h3>
+                            ساعت مراجعه
+                        </h3>
+
+                        <p>
+                            صبح‌ها ۱۰:۳۰ تا ۱۳:۳۰
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ورود پرسنل -->
+            <section class="worker-login-section">
+
+                <div class="worker-login-box">
+
+                    <span class="section-label">
+                        ویژه پرسنل
+                    </span>
+
+                    <h2>
+                        ورود به پنل پرسنل
+                    </h2>
+
+                    <p>
+                        همکاران شرکت می‌توانند از طریق
+                        پنل شخصی خود وارد سامانه شوند.
+                    </p>
+
+                    <a href="login.html" class="primary-button">
+                        🔐 ورود پرسنل
+                    </a>
+
+                </div>
+
+            </section>            <!-- Footer -->
+            <footer class="footer">
+
+                <div class="footer-content">
+
+                    <div class="footer-brand">
+
+                        <h2>
+                            انتخاب نیک
+                        </h2>
+
+                        <p>
+                            شرکت خدماتی نظافتی تبریز
+                        </p>
+
+                    </div>
+
+
+                    <div class="footer-links">
+
+                        <a href="#recruitment">
+                            استخدام
+                        </a>
+
+                        <a href="#contact">
+                            تماس با ما
+                        </a>
+
+                        <a href="login.html">
+                            ورود پرسنل
+                        </a>
+
+                    </div>
+
+
+                    <div class="footer-address">
+
+                        <h3>
+                            آدرس دفتر
+                        </h3>
+
+                        <p>
+                            چهارراه ابوریحان،
+                            مجتمع تجاری ابوریحان،
+                            طبقه بالا، واحد A7
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="footer-bottom">
+
+                    <p>
+                        © ۱۴۰۵ شرکت خدماتی نظافتی تبریز انتخاب نیک
+                    </p>
+
+                </div>
+
+            </footer>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>
