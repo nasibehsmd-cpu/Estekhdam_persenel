@@ -8,10 +8,10 @@ document.addEventListener("DOMContentLoaded", function () {
         "https://script.google.com/macros/s/AKfycbzVRv0Xaa3FwMDugi8--ZTC_1uwNdqn1RlDfntAR98j-v9uW2Ngxe8Cfh6w1hksw-Mzxg/exec";
 
     const workerCode =
-        sessionStorage.getItem("workerCode");
+        localStorage.getItem("workerCode") || sessionStorage.getItem("workerCode");
 
     const workerInfoRaw =
-        sessionStorage.getItem("workerInfo");
+        localStorage.getItem("workerInfo") || sessionStorage.getItem("workerInfo");
 
 
     /* =========================================
@@ -1708,6 +1708,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 sessionStorage.removeItem(
                     "workerInfo"
                 );
+                localStorage.removeItem("workerCode");
+                localStorage.removeItem("workerInfo");
+
 
 
                 window.location.href =
