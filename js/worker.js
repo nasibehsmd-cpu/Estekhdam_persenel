@@ -1868,7 +1868,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const weatherImages = {
                 "باران": "rain-gif.gif",
-                "پاییز": "payiz.gif",
+                "پاییز": "payiz3.gif",
                 "زمستان": "barf.gif",
                 "بهار": "bahar.gif",
                 "تابستان": "tabestan.gif",
