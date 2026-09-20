@@ -60,7 +60,8 @@ document.addEventListener("DOMContentLoaded", function () {
             "پاییز": "payiz.mp3",
             "زمستان": "barf.mp3",
             "بهار": "bahar.mp3",
-            "تابستان": "tabestan.mp3"
+            "تابستان": "tabestan.mp3",
+            "پرنده": "parande.mp3",
         };
 
         const sound = weatherSounds[weather];
@@ -1870,7 +1871,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 "پاییز": "payiz.gif",
                 "زمستان": "barf.gif",
                 "بهار": "bahar.gif",
-                "تابستان": "tabestan.gif"
+                "تابستان": "tabestan.gif",
+                "پرنده": "parande.gif"
             };
 
             const weather = result.data && result.data.weather;
