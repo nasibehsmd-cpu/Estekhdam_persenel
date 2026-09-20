@@ -22,6 +22,118 @@ document.addEventListener("DOMContentLoaded", function () {
         window.location.href = "login.html";
         return;
     }
+    /* =========================================
+       صدای آب و هوا
+    ========================================= */
+
+    const weatherSound =
+        document.getElementById("rainSound");
+
+    const weatherSoundToggle =
+        document.getElementById("rainSoundToggle");
+
+    let weatherSoundEnabled = true;
+
+    function updateWeatherSoundButton() {
+        if (!weatherSoundToggle) return;
+
+        if (weatherSoundEnabled) {
+            weatherSoundToggle.textContent = "🔊";
+            weatherSoundToggle.setAttribute(
+                "aria-label",
+                "خاموش کردن صدا"
+            );
+        } else {
+            weatherSoundToggle.textContent = "🔇";
+            weatherSoundToggle.setAttribute(
+                "aria-label",
+                "فعال کردن صدا"
+            );
+        }
+    }
+
+    function setWeatherSound(weather) {
+        if (!weatherSound) return;
+
+        const weatherSounds = {
+            "باران": "rain-sound.mp3",
+            "پاییز": "payiz.mp3",
+            "زمستان": "barf.mp3",
+            "بهار": "bahar.mp3",
+            "تابستان": "tabestan.mp3"
+        };
+
+        const sound = weatherSounds[weather];
+
+        if (!sound) {
+            weatherSound.pause();
+            weatherSound.currentTime = 0;
+            weatherSound.removeAttribute("src");
+            weatherSound.load();
+            weatherSoundEnabled = false;
+
+            if (weatherSoundToggle) {
+                weatherSoundToggle.style.display = "none";
+            }
+
+            updateWeatherSoundButton();
+            return;
+        }
+
+        weatherSound.src = sound;
+        weatherSound.loop = true;
+        weatherSoundEnabled = true;
+
+        if (weatherSoundToggle) {
+            weatherSoundToggle.style.display = "block";
+        }
+
+        updateWeatherSoundButton();
+
+        weatherSound.play().catch(function (error) {
+            console.log(
+                "پخش خودکار صدا توسط مرورگر متوقف شد:",
+                error
+            );
+        });
+    }
+
+    if (weatherSoundToggle) {
+        weatherSoundToggle.addEventListener(
+            "click",
+            function (event) {
+                event.stopPropagation();
+
+                weatherSoundEnabled = !weatherSoundEnabled;
+
+                if (weatherSoundEnabled) {
+                    weatherSound.play().catch(function (error) {
+                        console.log(
+                            "پخش صدا توسط مرورگر متوقف شد:",
+                            error
+                        );
+                    });
+                } else if (weatherSound) {
+                    weatherSound.pause();
+                }
+
+                updateWeatherSoundButton();
+            }
+        );
+    }
+
+    document.addEventListener(
+        "click",
+        function () {
+            if (weatherSoundEnabled && weatherSound) {
+                weatherSound.play().catch(function () {});
+            }
+        },
+        { once: true }
+    );
+
+    updateWeatherSoundButton();
+
 
 
     /* =========================================
@@ -126,6 +238,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             if (sectionName === "profile") {
+    /* =========================================
+       تست تنظیمات آب و هوا
+    ========================================= */
+
+    fetch("https://script.google.com/macros/s/AKfycbynEmf1HJvTdtIf10gKNLi7xWUFIMnCwkMUr7lYm83r1DOlq4PGiTwutgGqdtEMMyAW/exec?action=weather")
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (result) {
+            console.log("تنظیمات آب و هوا:", result);
+        })
+        .catch(function (error) {
+            console.error("خطا در دریافت تنظیمات آب و هوا:", error);
+        });
+
+
                 loadWorkerInfo();
             }
 
@@ -1723,6 +1851,46 @@ document.addEventListener("DOMContentLoaded", function () {
     /* =========================================
        شروع اولیه
     ========================================= */
+
+    /* =========================================
+       تست تنظیمات آب و هوا
+    ========================================= */
+
+    fetch("https://script.google.com/macros/s/AKfycbynEmf1HJvTdtIf10gKNLi7xWUFIMnCwkMUr7lYm83r1DOlq4PGiTwutgGqdtEMMyAW/exec?action=weather")
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (result) {
+            console.log("تنظیمات آب و هوا:", result);
+
+            const weatherEffect = document.getElementById("weatherEffect");
+
+            const weatherImages = {
+                "باران": "rain-gif.gif",
+                "پاییز": "payiz.gif",
+                "زمستان": "barf.gif",
+                "بهار": "bahar.gif",
+                "تابستان": "tabestan.gif"
+            };
+
+            const weather = result.data && result.data.weather;
+            setWeatherSound(weather);
+            const image = weatherImages[weather];
+
+            if (weatherEffect) {
+                if (image) {
+                    weatherEffect.style.setProperty("--weather-image", "url(\"" + image + "\")");
+                    weatherEffect.style.display = "block";
+                } else {
+                    weatherEffect.style.setProperty("--weather-image", "none");
+                    weatherEffect.style.display = "none";
+                }
+            }
+        })
+        .catch(function (error) {
+            console.error("خطا در دریافت تنظیمات آب و هوا:", error);
+        });
+
 
     loadWorkerInfo();
 

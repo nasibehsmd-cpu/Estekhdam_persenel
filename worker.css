@@ -1154,3 +1154,40 @@ button {
     font-size: 28px !important;
     font-weight: 900 !important;
 }
+
+/* =========================
+   Weather Effects
+========================= */
+
+.weather-effect {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 999;
+}
+
+.weather-effect::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: var(--weather-image, none);
+    background-repeat: repeat;
+    background-position: center;
+    background-size: auto 100%;
+    opacity: 0.35;
+    pointer-events: none;
+}
+
+.rain-sound-toggle {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 1000;
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+}
