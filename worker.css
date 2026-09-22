@@ -415,7 +415,7 @@ button {
 
 .account-item strong {
     color: #173b4d;
-    font-size: 17px;
+    font-size: 22px;
 }
 
 
@@ -524,7 +524,6 @@ button {
     font-size: 14px;
     font-weight: bold;
     list-style: none;
-    position: relative;
     padding-left: 45px;
 }
 
@@ -589,7 +588,7 @@ button {
 }
 
 .rule-item > span {
-    font-size: 19px;
+    font-size: 22px;
     flex-shrink: 0;
 }
 
@@ -737,7 +736,7 @@ button {
         width: 40px;
         height: 40px;
         border-radius: 11px;
-        font-size: 19px;
+        font-size: 22px;
     }
 
     .worker-logo h1 {
@@ -767,7 +766,7 @@ button {
     }
 
     .welcome-section h2 {
-        font-size: 19px;
+        font-size: 22px;
     }
 
     .welcome-section p {
@@ -936,7 +935,7 @@ button {
     }
 
     .welcome-section h2 {
-        font-size: 17px;
+        font-size: 22px;
     }
 
     .panel-section {
@@ -948,7 +947,7 @@ button {
 .payment-card {
     padding: 18px;
     margin-top: 15px;
-    font-size: 17px;
+    font-size: 22px;
     line-height: 2;
 }
 
@@ -1038,7 +1037,7 @@ button {
 }
 
 #companyPaymentInfo .payment-card div {
-    font-size: 19px;
+    font-size: 22px;
     line-height: 1.8;
 }
 
@@ -1190,4 +1189,44 @@ button {
     border-radius: 50%;
     cursor: pointer;
     font-size: 20px;
+}
+
+.normal-weather-toggle {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    background: white;
+    position: fixed;
+    right: 74px !important;
+    bottom: 18px !important;
+    top: auto !important;
+    left: auto !important;
+    z-index: 1000;
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.normal-weather-toggle.image-off::after {
+    content: "";
+    position: absolute;
+    width: 34px;
+    height: 3px;
+    background: currentColor;
+    transform: rotate(-45deg);
+    left: 5px;
+    top: 20px;
+    border-radius: 2px;
+}
+
+
+/* بزرگ‌تر شدن فقط اطلاعات دریافتی از Google Sheet برای Nk_6417 */
+.large-text-worker .info-item strong {
+    font-size: 22px;
+}
+
+/* بزرگ‌تر شدن اطلاعات کارها برای Nk_6417 */
+.large-text-worker .job-detail strong {
+    font-size: 30px;
 }

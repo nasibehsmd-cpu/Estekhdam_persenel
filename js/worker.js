@@ -327,6 +327,9 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
+        if (workerCode === "Nk_6417") {
+            document.body.classList.add("large-text-worker");
+        }
 
         if (workerName) {
             workerName.textContent =
@@ -1857,6 +1860,9 @@ document.addEventListener("DOMContentLoaded", function () {
        تست تنظیمات آب و هوا
     ========================================= */
 
+    let currentWeatherImage = null;
+    let weatherImageEnabled = true;
+
     fetch("https://script.google.com/macros/s/AKfycbynEmf1HJvTdtIf10gKNLi7xWUFIMnCwkMUr7lYm83r1DOlq4PGiTwutgGqdtEMMyAW/exec?action=weather")
         .then(function (response) {
             return response.json();
@@ -1872,12 +1878,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 "زمستان": "barf.gif",
                 "بهار": "bahar.gif",
                 "تابستان": "tabestan.gif",
-                "پرنده": "parande.gif"
             };
 
             const weather = result.data && result.data.weather;
             setWeatherSound(weather);
             const image = weatherImages[weather];
+            currentWeatherImage = image;
 
             if (weatherEffect) {
                 if (image) {
@@ -1887,6 +1893,30 @@ document.addEventListener("DOMContentLoaded", function () {
                     weatherEffect.style.setProperty("--weather-image", "none");
                     weatherEffect.style.display = "none";
                 }
+            }
+            const normalWeatherToggle = document.getElementById("normalWeatherToggle");
+
+            if (normalWeatherToggle) {
+                normalWeatherToggle.addEventListener("click", function (event) {
+                    event.stopPropagation();
+                    weatherImageEnabled = !weatherImageEnabled;
+
+                    if (weatherImageEnabled) {
+                        normalWeatherToggle.classList.remove("image-off");
+                        normalWeatherToggle.setAttribute("aria-label", "خاموش کردن تصویر");
+                        if (currentWeatherImage && weatherEffect) {
+                            weatherEffect.style.setProperty("--weather-image", "url(\"" + currentWeatherImage + "\")");
+                            weatherEffect.style.display = "block";
+                        }
+                    } else {
+                        normalWeatherToggle.classList.add("image-off");
+                        normalWeatherToggle.setAttribute("aria-label", "فعال کردن تصویر");
+                        if (weatherEffect) {
+                            weatherEffect.style.setProperty("--weather-image", "none");
+                            weatherEffect.style.display = "none";
+                        }
+                    }
+                });
             }
         })
         .catch(function (error) {
