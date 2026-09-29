@@ -22,6 +22,8 @@ jobs:
 
       - name: نصب Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
 
       - name: نصب Android SDK Platform
         run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
