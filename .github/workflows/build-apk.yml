@@ -33,11 +33,31 @@ jobs:
         with:
           gradle-version: '8.9'
 
-      - name: ساخت APK
+      - name: آماده‌سازی امضای Release
+        env:
+          RELEASE_KEYSTORE_BASE64: ${{ secrets.RELEASE_KEYSTORE_BASE64 }}
+          RELEASE_KEYSTORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
+          RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
+        run: |
+          echo "$RELEASE_KEYSTORE_BASE64" | base64 --decode > android-app/entekhab-release.jks
+
+          cat > android-app/key.properties <<EOF2
+          storeFile=entekhab-release.jks
+          storePassword=$RELEASE_KEYSTORE_PASSWORD
+          keyAlias=$RELEASE_KEY_ALIAS
+          keyPassword=$RELEASE_KEYSTORE_PASSWORD
+          EOF2
+
+      - name: ساخت APK Debug
         run: gradle -p android-app assembleDebug
 
-      - name: ذخیره APK
+      - name: ساخت APK Release
+        run: gradle -p android-app assembleRelease
+
+      - name: ذخیره APK ها
         uses: actions/upload-artifact@v4
         with:
           name: Estekhdam-Persenel-APK
-          path: android-app/app/build/outputs/apk/debug/app-debug.apk
+          path: |
+            android-app/app/build/outputs/apk/debug/app-debug.apk
+            android-app/app/build/outputs/apk/release/app-release.apk
