@@ -23,7 +23,7 @@ public class MainActivity extends Activity {
 
         webView.setWebViewClient(new WebViewClient());
 
-        webView.loadUrl("https://nasibehsmd-cpu.github.io/Estekhdam_persenel/login.html");
+        webView.loadUrl("https://nasibehsmd-cpu.github.io/Estekhdam_persenel/index.html");
     }
 
     @Override
