@@ -5,7 +5,7 @@
 
     <application
         android:allowBackup="true"
-        android:label="انتخاب نیک"
+        android:label="Estekhdam_persenel"
         android:usesCleartextTraffic="false"
         android:theme="@style/AppTheme">
 
