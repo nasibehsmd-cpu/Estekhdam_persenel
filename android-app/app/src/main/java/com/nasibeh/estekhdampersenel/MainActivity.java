@@ -46,6 +46,18 @@ public class MainActivity extends Activity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+
+        if (webView != null) {
+            webView.evaluateJavascript(
+                "(function(){document.querySelectorAll('audio').forEach(function(a){a.pause();a.currentTime=0;});})();",
+                null
+            );
+        }
+    }
+
+    @Override
     public void onBackPressed() {
         if (webView.canGoBack()) {
             webView.goBack();
