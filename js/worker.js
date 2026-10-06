@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         );
                     });
                 } else if (weatherSound) {
-                    weatherSound.pause();
+                    stopWeatherSound();
                 }
 
                 updateWeatherSoundButton();
@@ -123,15 +123,20 @@ document.addEventListener("DOMContentLoaded", function () {
         );
     }
 
-    document.addEventListener(
-        "click",
-        function () {
-            if (weatherSoundEnabled && weatherSound) {
-                weatherSound.play().catch(function () {});
-            }
-        },
-        { once: true }
-    );
+    function stopWeatherSound() {
+        if (!weatherSound) return;
+
+        weatherSound.pause();
+        weatherSound.currentTime = 0;
+    }
+
+    window.addEventListener("pagehide", function () {
+        stopWeatherSound();
+    });
+
+    window.addEventListener("beforeunload", function () {
+        stopWeatherSound();
+    });
 
     updateWeatherSoundButton();
 

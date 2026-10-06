@@ -1219,14 +1219,3 @@ button {
     top: 20px;
     border-radius: 2px;
 }
-
-
-/* بزرگ‌تر شدن فقط اطلاعات دریافتی از Google Sheet برای Nk_6417 */
-.large-text-worker .info-item strong {
-    font-size: 22px;
-}
-
-/* بزرگ‌تر شدن اطلاعات کارها برای Nk_6417 */
-.large-text-worker .job-detail strong {
-    font-size: 30px;
-}
