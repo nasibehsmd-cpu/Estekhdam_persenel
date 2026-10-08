@@ -260,7 +260,144 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
 
-                loadWorkerInfo();
+                /* =========================================
+       سیستم اعلان کار جدید سایت
+    ========================================= */
+
+    const NOTIFICATION_WORKER_URL =
+        "https://estekhdam-ntfy.nasibehsmd.workers.dev";
+
+    const notificationStartKey =
+        "notificationStartTime_" + workerCode;
+
+    let notificationStartTime =
+        Number(localStorage.getItem(notificationStartKey) || 0);
+
+    if (!notificationStartTime) {
+        notificationStartTime = Math.floor(Date.now() / 1000);
+
+        localStorage.setItem(
+            notificationStartKey,
+            String(notificationStartTime)
+        );
+    }
+
+    const processedSiteNotificationIds = new Set();
+
+    function speakNewJobNotification() {
+        if (!("speechSynthesis" in window)) {
+            console.log("مرورگر از پخش صدای اعلان پشتیبانی نمی‌کند.");
+            return;
+        }
+
+        window.speechSynthesis.cancel();
+
+        const message =
+            new SpeechSynthesisUtterance("Taazaa eesh vaar");
+
+        message.lang = "en-US";
+        message.rate = 0.9;
+
+        window.speechSynthesis.speak(message);
+    }
+
+    async function deleteSiteNotification(id) {
+        try {
+            await fetch(
+                NOTIFICATION_WORKER_URL +
+                "/" +
+                encodeURIComponent(id),
+                {
+                    method: "DELETE"
+                }
+            );
+        } catch (error) {
+            console.log("حذف اعلان انجام نشد:", error);
+        }
+    }
+
+    async function checkSiteNotifications() {
+        if (!navigator.onLine) {
+            return;
+        }
+
+        try {
+            const response = await fetch(
+                NOTIFICATION_WORKER_URL +
+                "?workerCode=" +
+                encodeURIComponent(workerCode) +
+                "&_=" +
+                Date.now(),
+                {
+                    method: "GET",
+                    cache: "no-store"
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error("HTTP " + response.status);
+            }
+
+            const notifications = await response.json();
+
+            if (!Array.isArray(notifications)) {
+                return;
+            }
+
+            for (const notification of notifications) {
+                const createdAt =
+                    Number(notification.createdAt || 0);
+
+                if (processedSiteNotificationIds.has(notification.id)) {
+                    continue;
+                }
+
+                if (createdAt < notificationStartTime) {
+                    await deleteSiteNotification(notification.id);
+                    processedSiteNotificationIds.add(notification.id);
+                    continue;
+                }
+
+                const message =
+                    notification.message || "";
+
+                if (!message) {
+                    continue;
+                }
+
+                let data;
+
+                try {
+                    data = JSON.parse(message);
+                } catch (error) {
+                    continue;
+                }
+
+                if (data.workerCode !== workerCode) {
+                    continue;
+                }
+
+                processedSiteNotificationIds.add(notification.id);
+
+                speakNewJobNotification();
+
+                await deleteSiteNotification(
+                    notification.id
+                );
+            }
+        } catch (error) {
+            console.log("بررسی اعلان سایت:", error);
+        }
+    }
+
+    checkSiteNotifications();
+
+    setInterval(
+        checkSiteNotifications,
+        5000
+    );
+
+    loadWorkerInfo();
             }
 
             if (sectionName === "jobs") {
