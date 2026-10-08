@@ -24,7 +24,6 @@ public class NtfyService extends Service {
     private Thread listenerThread;
     private volatile String workerCode;
     private TextToSpeech tts;
-    private final long serviceStartTime = System.currentTimeMillis() / 1000;
 
     @Override
     public void onCreate() {
@@ -113,6 +112,23 @@ public class NtfyService extends Service {
                                     data.optString("workerCode", "");
 
                             if (!workerCode.equals(notificationWorkerCode)) {
+                                continue;
+                            }
+
+                            long createdAt =
+                                    notification.optLong("createdAt", 0);
+
+                            android.content.SharedPreferences preferences =
+                                    getSharedPreferences("estekhdam", MODE_PRIVATE);
+
+                            String startKey =
+                                    "notificationStartTime_" + workerCode;
+
+                            long notificationStartTime =
+                                    preferences.getLong(startKey, 0);
+
+                            if (createdAt < notificationStartTime) {
+                                deleteNotification(id);
                                 continue;
                             }
 
@@ -211,10 +227,24 @@ public class NtfyService extends Service {
             if (code != null && !code.isEmpty()) {
                 workerCode = code;
 
-                getSharedPreferences("estekhdam", MODE_PRIVATE)
-                        .edit()
-                        .putString("workerCode", code)
-                        .apply();
+                android.content.SharedPreferences preferences =
+                        getSharedPreferences("estekhdam", MODE_PRIVATE);
+
+                android.content.SharedPreferences.Editor editor =
+                        preferences.edit();
+
+                editor.putString("workerCode", code);
+
+                String startKey = "notificationStartTime_" + code;
+
+                if (!preferences.contains(startKey)) {
+                    editor.putLong(
+                            startKey,
+                            System.currentTimeMillis() / 1000
+                    );
+                }
+
+                editor.apply();
             }
         }
 
