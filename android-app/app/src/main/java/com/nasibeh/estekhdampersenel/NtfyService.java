@@ -18,10 +18,11 @@ import java.util.Locale;
 public class NtfyService extends Service {
 
     private static final String CHANNEL_ID = "ntfy_connection";
-    private static final String TOPIC_URL =
-            "https://ntfy.sh/estekhdam-test-73921/json";
+    private static final String WORKER_URL =
+            "https://estekhdam-ntfy.nasibehsmd.workers.dev";
 
     private Thread listenerThread;
+    private volatile String workerCode;
     private TextToSpeech tts;
     private final long serviceStartTime = System.currentTimeMillis() / 1000;
 
@@ -39,50 +40,101 @@ public class NtfyService extends Service {
         });
 
         startForeground(1001, createNotification());
-
-        startNtfyListener();
     }
 
     private void startNtfyListener() {
         listenerThread = new Thread(() -> {
+
             while (!Thread.currentThread().isInterrupted()) {
+
                 HttpURLConnection connection = null;
 
                 try {
-                    URL url = new URL(TOPIC_URL);
-                    connection = (HttpURLConnection) url.openConnection();
-                    connection.setRequestMethod("GET");
-                    connection.setConnectTimeout(15000);
-                    connection.setReadTimeout(0);
+                    if (workerCode == null || workerCode.isEmpty()) {
+                        Thread.sleep(5000);
+                        continue;
+                    }
 
-                    BufferedReader reader = new BufferedReader(
-                            new InputStreamReader(connection.getInputStream())
+                    URL url = new URL(
+                            WORKER_URL
+                                    + "?workerCode="
+                                    + java.net.URLEncoder.encode(
+                                            workerCode,
+                                            "UTF-8"
+                                    )
                     );
 
-                    String line;
+                    connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestMethod("GET");
+                    connection.setConnectTimeout(10000);
+                    connection.setReadTimeout(10000);
 
-                    while ((line = reader.readLine()) != null) {
-                        if (line.contains("\"event\":\"message\"")) {
-                            long messageTime = extractMessageTime(line);
+                    int responseCode = connection.getResponseCode();
 
-                            if (messageTime > serviceStartTime) {
-                                speakNotification();
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+
+                        BufferedReader reader = new BufferedReader(
+                                new InputStreamReader(
+                                        connection.getInputStream()
+                                )
+                        );
+
+                        StringBuilder response = new StringBuilder();
+                        String line;
+
+                        while ((line = reader.readLine()) != null) {
+                            response.append(line);
+                        }
+
+                        reader.close();
+
+                        org.json.JSONArray notifications =
+                                new org.json.JSONArray(response.toString());
+
+                        for (int i = 0; i < notifications.length(); i++) {
+
+                            org.json.JSONObject notification =
+                                    notifications.getJSONObject(i);
+
+                            String id =
+                                    notification.optString("id", "");
+
+                            String message =
+                                    notification.optString("message", "");
+
+                            if (id.isEmpty() || message.isEmpty()) {
+                                continue;
                             }
+
+                            org.json.JSONObject data =
+                                    new org.json.JSONObject(message);
+
+                            String notificationWorkerCode =
+                                    data.optString("workerCode", "");
+
+                            if (!workerCode.equals(notificationWorkerCode)) {
+                                continue;
+                            }
+
+                            speakNotification();
+
+                            deleteNotification(id);
                         }
                     }
 
-                    reader.close();
-
                 } catch (Exception ignored) {
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                    }
+
                 } finally {
+
                     if (connection != null) {
                         connection.disconnect();
                     }
+                }
+
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
                 }
             }
         });
@@ -90,26 +142,28 @@ public class NtfyService extends Service {
         listenerThread.start();
     }
 
-    private long extractMessageTime(String line) {
+    private void deleteNotification(String id) {
+
+        HttpURLConnection connection = null;
+
         try {
-            String key = "\"time\":";
-            int start = line.indexOf(key);
 
-            if (start == -1) {
-                return 0;
+            URL url = new URL(WORKER_URL + "/" + id);
+
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("DELETE");
+            connection.setConnectTimeout(10000);
+            connection.setReadTimeout(10000);
+
+            connection.getResponseCode();
+
+        } catch (Exception ignored) {
+
+        } finally {
+
+            if (connection != null) {
+                connection.disconnect();
             }
-
-            start += key.length();
-
-            int end = start;
-            while (end < line.length()
-                    && Character.isDigit(line.charAt(end))) {
-                end++;
-            }
-
-            return Long.parseLong(line.substring(start, end));
-        } catch (Exception e) {
-            return 0;
         }
     }
 
@@ -150,6 +204,31 @@ public class NtfyService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        if (intent != null) {
+            String code = intent.getStringExtra("workerCode");
+
+            if (code != null && !code.isEmpty()) {
+                workerCode = code;
+
+                getSharedPreferences("estekhdam", MODE_PRIVATE)
+                        .edit()
+                        .putString("workerCode", code)
+                        .apply();
+            }
+        }
+
+        if (workerCode == null || workerCode.isEmpty()) {
+            workerCode = getSharedPreferences("estekhdam", MODE_PRIVATE)
+                    .getString("workerCode", "");
+        }
+
+        if (workerCode != null
+                && !workerCode.isEmpty()
+                && (listenerThread == null || !listenerThread.isAlive())) {
+            startNtfyListener();
+        }
+
         return START_STICKY;
     }
 

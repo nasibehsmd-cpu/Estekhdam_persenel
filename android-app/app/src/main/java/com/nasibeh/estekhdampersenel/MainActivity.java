@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.content.Intent;
 import android.os.Build;
+import android.content.SharedPreferences;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -40,7 +41,45 @@ public class MainActivity extends Activity {
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
 
-        webView.setWebViewClient(new WebViewClient());
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+
+                view.evaluateJavascript(
+                    "(function(){return localStorage.getItem('workerCode') || sessionStorage.getItem('workerCode') || '';})();",
+                    value -> {
+                        if (value == null) {
+                            return;
+                        }
+
+                        String workerCode = value.replace("\"", "");
+
+                        if (workerCode.isEmpty()) {
+                            return;
+                        }
+
+                        SharedPreferences preferences =
+                                getSharedPreferences("estekhdam", MODE_PRIVATE);
+
+                        preferences.edit()
+                                .putString("workerCode", workerCode)
+                                .apply();
+
+                        Intent serviceIntent =
+                                new Intent(MainActivity.this, NtfyService.class);
+
+                        serviceIntent.putExtra("workerCode", workerCode);
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            startForegroundService(serviceIntent);
+                        } else {
+                            startService(serviceIntent);
+                        }
+                    }
+                );
+            }
+        });
 
         webView.loadUrl("https://nasibehsmd-cpu.github.io/Estekhdam_persenel/index.html");
     }
