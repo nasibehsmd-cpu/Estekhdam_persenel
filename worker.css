@@ -310,7 +310,7 @@ button {
     border: 1px solid #e5ebef;
     border-radius: 14px;
     padding: 18px;
-    background: #fafcfd;
+    background: #eaf3ff;
 }
 
 .job-card-header {
@@ -497,6 +497,110 @@ button {
     min-height: 20px;
     font-size: 12px;
     color: #1f6f8b;
+}
+
+
+/* ================================
+   پیام‌های پرسنل و پاسخ مدیریت
+================================ */
+
+.worker-messages-area {
+    margin-top: 22px;
+    padding-top: 16px;
+    border-top: 1px solid #e4ebef;
+}
+
+.worker-messages-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.worker-messages-heading h4 {
+    margin: 0;
+    color: #304653;
+    font-size: 15px;
+}
+
+#refreshWorkerMessages {
+    border: 1px solid #d7e5eb;
+    border-radius: 9px;
+    padding: 8px 12px;
+    background: #f3f8fa;
+    color: #1f6f8b;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+#workerMessagesList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#workerMessagesList > p {
+    color: #65737d;
+    font-size: 13px;
+    line-height: 1.9;
+}
+
+.worker-message-card {
+    padding: 14px;
+    border: 1px solid #d1e3fa;
+    border-radius: 13px;
+    background: #eaf3ff;
+    overflow-wrap: anywhere;
+}
+
+.worker-message-card > p {
+    margin: 0 0 8px;
+    color: #000000;
+    font-size: 13px;
+    line-height: 1.9;
+}
+
+.worker-message-card > .worker-message-text {
+    white-space: pre-wrap;
+    color: #000000 !important;
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+}
+
+.worker-message-meta {
+    color: #000000 !important;
+    font-size: 11px !important;
+}
+
+.management-reply {
+    margin-top: 12px;
+    padding: 12px;
+    border-right: 3px solid #1f8a70;
+    border-radius: 8px;
+    background: #edf8f3;
+    color: #245b4b;
+}
+
+.management-reply p {
+    margin: 7px 0;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    font-size: 13px;
+    line-height: 1.9;
+}
+
+.management-reply small {
+    color: #5d7f73;
+    font-size: 11px;
+}
+
+.management-reply-pending {
+    margin: 10px 0 0;
+    color: #92743a !important;
+    font-size: 12px !important;
+    line-height: 1.8;
 }
 
 

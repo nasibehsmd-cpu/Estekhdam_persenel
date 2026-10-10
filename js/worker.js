@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
     ========================================= */
 
     const API_URL =
-        "https://script.google.com/macros/s/AKfycbzVRv0Xaa3FwMDugi8--ZTC_1uwNdqn1RlDfntAR98j-v9uW2Ngxe8Cfh6w1hksw-Mzxg/exec";
+        "https://script.google.com/macros/s/AKfycbynEmf1HJvTdtIf10gKNLi7xWUFIMnCwkMUr7lYm83r1DOlq4PGiTwutgGqdtEMMyAW/exec";
 
     const workerCode =
         localStorage.getItem("workerCode") || sessionStorage.getItem("workerCode");
@@ -1675,6 +1675,8 @@ document.addEventListener("DOMContentLoaded", function () {
                             receiptPreview.innerHTML =
                                 "";
                         }
+
+                        loadWorkerMessages();
                     })
 
                     .catch(function (error) {
@@ -1757,6 +1759,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         receiptPreview.innerHTML =
                             "";
                     }
+
+                    loadWorkerMessages();
                 })
 
                 .catch(function (error) {
@@ -1777,6 +1781,104 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         );
     }
+
+
+    /* =========================================
+       نمایش پیام‌ها و پاسخ مدیریت
+    ========================================= */
+
+    const workerMessagesList =
+        document.getElementById("workerMessagesList");
+
+    const refreshWorkerMessages =
+        document.getElementById("refreshWorkerMessages");
+
+    function escapeMessageHtml(value) {
+        return String(value == null ? "" : value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+    }
+
+    function loadWorkerMessages() {
+        if (!workerMessagesList) return;
+
+        workerMessagesList.innerHTML =
+            "<p>در حال دریافت پیام‌ها...</p>";
+
+        apiRequest("workerMessages")
+            .then(function(result) {
+                if (!result || !result.success) {
+                    throw new Error(
+                        result && result.message
+                            ? result.message
+                            : "دریافت پیام‌ها ناموفق بود."
+                    );
+                }
+
+                const messages = Array.isArray(result.data)
+                    ? result.data
+                    : [];
+
+                if (!messages.length) {
+                    workerMessagesList.innerHTML =
+                        "<p>هنوز پیامی ثبت نشده است.</p>";
+                    return;
+                }
+
+                workerMessagesList.innerHTML = messages
+                    .map(function(item) {
+                        const message = escapeMessageHtml(item.message);
+                        const time = escapeMessageHtml(item.time);
+                        const status = escapeMessageHtml(item.status);
+                        const reply = escapeMessageHtml(item.reply);
+                        const deliveryTime =
+                            escapeMessageHtml(item.deliveryTime);
+
+                        return `
+                            <article class="worker-message-card">
+                                <p><strong>پیام شما:</strong></p>
+                                <p class="worker-message-text">${message}</p>
+                                <p class="worker-message-meta">
+                                    ساعت ارسال: ${time || "—"}
+                                    <span> | وضعیت: ${status || "—"}</span>
+                                </p>
+                                ${
+                                    reply
+                                        ? `
+                                            <div class="management-reply">
+                                                <strong>پاسخ مدیریت:</strong>
+                                                <p>${reply}</p>
+                                                <small>
+                                                    ساعت تحویل: ${deliveryTime || "—"}
+                                                </small>
+                                            </div>
+                                        `
+                                        : ""
+                                }
+                            </article>
+                        `;
+                    })
+                    .join("");
+            })
+            .catch(function(error) {
+                console.error("خطا در دریافت پیام‌ها:", error);
+
+                workerMessagesList.innerHTML =
+                    "<p>دریافت پیام‌ها انجام نشد. پس از انتشار نسخه جدید سرور دوباره تلاش کنید.</p>";
+            });
+    }
+
+    if (refreshWorkerMessages) {
+        refreshWorkerMessages.addEventListener(
+            "click",
+            loadWorkerMessages
+        );
+    }
+
+    loadWorkerMessages();
 
 
     /* =========================================
