@@ -7,13 +7,14 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
-import android.speech.tts.TextToSpeech;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Locale;
 
 public class NtfyService extends Service {
 
@@ -23,21 +24,13 @@ public class NtfyService extends Service {
 
     private Thread listenerThread;
     private volatile String workerCode;
-    private TextToSpeech tts;
+    private Ringtone currentRingtone;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
         createNotificationChannel();
-
-        tts = new TextToSpeech(this, status -> {
-            if (status == TextToSpeech.SUCCESS) {
-                tts.setLanguage(Locale.US);
-                tts.setSpeechRate(0.9f);
-            }
-        });
-
         startForeground(1001, createNotification());
     }
 
@@ -184,13 +177,26 @@ public class NtfyService extends Service {
     }
 
     private void speakNotification() {
-        if (tts != null) {
-            tts.speak(
-                    "Taazaa eesh vaar",
-                    TextToSpeech.QUEUE_FLUSH,
-                    null,
-                    "new_job"
+        try {
+            Uri soundUri = RingtoneManager.getDefaultUri(
+                    RingtoneManager.TYPE_NOTIFICATION
             );
+            if (soundUri == null) {
+                soundUri = RingtoneManager.getDefaultUri(
+                        RingtoneManager.TYPE_RINGTONE
+                );
+            }
+            if (soundUri != null) {
+                if (currentRingtone != null && currentRingtone.isPlaying()) {
+                    currentRingtone.stop();
+                }
+                currentRingtone = RingtoneManager.getRingtone(this, soundUri);
+                if (currentRingtone != null) {
+                    currentRingtone.play();
+                }
+            }
+        } catch (Exception e) {
+            android.util.Log.e("NtfyService", "خطا در پخش صدای اعلان", e);
         }
     }
 
@@ -267,12 +273,9 @@ public class NtfyService extends Service {
         if (listenerThread != null) {
             listenerThread.interrupt();
         }
-
-        if (tts != null) {
-            tts.stop();
-            tts.shutdown();
+        if (currentRingtone != null && currentRingtone.isPlaying()) {
+            currentRingtone.stop();
         }
-
         super.onDestroy();
     }
 
